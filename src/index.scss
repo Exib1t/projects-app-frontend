@@ -1,0 +1,141 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Ubuntu !important;
+}
+
+body {
+  background-color: #1A1B22;
+  color: #e8e8e8;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.b-navLink {
+  margin: 0;
+  padding: 0 0 5px;
+  font: 500 20px/1 Ubuntu;
+  color: #D6D6D6;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  transition: .3s;
+
+  &:hover {
+    border-bottom: 2px solid #D6D6D6;
+  }
+
+  &.active {
+    pointer-events: none;
+    color: #DBA34E !important;
+    border-bottom: 2px solid #DBA34E;
+  }
+}
+
+.quill {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.readOnly .ql-container {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.ql-container {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.ql-container, .quill {
+  background: #1A1B22;
+}
+
+.ql-container, .ql-toolbar {
+  border-color: rgba(255,255,255,.23) !important;
+}
+
+.ql-formats {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+}
+
+.ql-formats button, .ql-formats .ql-picker {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 33px !important;
+  height: 33px !important;
+  background: #212129 !important;
+  border: none;
+  border-radius: 5px;
+
+  &.ql-active {
+    background: #DBA34E !important;
+  }
+}
+
+.ql-font.ql-picker {
+  width: 108px !important;
+}
+
+.ql-formats button path, .ql-formats button line, .ql-formats button rect, .ql-formats .ql-picker path, .ql-formats .ql-picker line, .ql-formats .ql-picker rect, .ql-formats .ql-picker polyline {
+  stroke: #D6D6D6 !important;
+  opacity: 1 !important;
+}
+
+.ql-formats button.ql-active path, .ql-formats button.ql-active line, .ql-formats button.ql-active rect, .ql-formats .ql-picker.ql-active path, .ql-formats .ql-picker.ql-active line, .ql-formats .ql-picker.ql-active rect, .ql-formats .ql-picker.ql-active polyline  {
+  stroke: #16161e !important;
+}
+
+.ql-formats button:hover, .ql-formats .ql-picker:hover  {
+  background: #a97e23 !important;
+
+  & path, & line, & rect {
+    stroke: #16161e !important;
+  }
+}
+
+.ql-picker-label {
+  display: flex !important;
+  align-items: center !important;
+  border: none !important;
+  polygon {
+    stroke: #D6D6D6 !important;
+  }
+  color: #D6D6D6 !important;
+
+  &:hover {
+    polygon {
+      stroke: #FFFFFF !important;
+    }
+    color: #FFFFFF !important;
+  }
+}
+
+.ql-picker-item{
+  color: #D6D6D6 !important;
+
+  &:hover {
+    color: #FFFFFF !important;
+  }
+}
+
+.ql-picker-options {
+  border-radius: 5px;
+  background: #16161e !important;
+  border-color: rgba(255,255,255,.23) !important;
+}
+
+.MuiDataGrid-cellContent, .MuiDataGrid-columnHeaderTitle {
+  font-size: 16px;
+}
