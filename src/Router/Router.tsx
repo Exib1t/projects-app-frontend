@@ -18,6 +18,8 @@ import UsersPage from '../components/pages/UsersPage/UsersPage';
 import UsersList from '../components/common/UsersList/UsersList';
 import Grid from '@mui/material/Grid/Grid';
 import { Backdrop, CircularProgress } from '@mui/material';
+import ProjectList from '../components/common/ProjectList/ProjectList';
+import ProjectEdit from '../components/common/ProjectEdit/ProjectEdit';
 
 const Router = () => {
   const { authorized } = useAppSelector(state => state.user);
@@ -40,38 +42,39 @@ const Router = () => {
       {authorized ? (
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to={ROUTES.projects} />} />
-            <Route path={ROUTES.profile} element={<ProfilePage />}>
+            <Route index element={<Navigate to={ROUTES.PROJECTS} />} />
+            <Route path={ROUTES.PROFILE} element={<ProfilePage />}>
               <Route index element={<AccountTab />} />
             </Route>
-            <Route path={ROUTES.projects} element={<ProjectsPage />}>
-              <Route path=":projectId" element={<Outlet />}>
-                <Route index element={<Navigate to="tasks" />} />
-                <Route path="tasks" element={<TaskSection />}>
-                  <Route path=":taskId" element={<TaskDetails />} />
-                  <Route path=":taskId/edit" element={<TaskEdit />} />
-                  <Route path="add" element={<TaskCreate />} />
+            <Route path={ROUTES.PROJECTS} element={<ProjectsPage />}>
+              <Route path={ROUTES.PROJECT} element={<Outlet />}>
+                <Route index element={<Navigate to={ROUTES.PROJECT_TASKS} />} />
+                <Route path={ROUTES.PROJECT_TASKS} element={<TaskSection />}>
+                  <Route path={ROUTES.PROJECT_TASK_CREATE} element={<TaskCreate />} />
+                  <Route path={ROUTES.PROJECT_TASK} element={<TaskDetails />} />
+                  <Route path={ROUTES.PROJECT_TASK_EDIT} element={<TaskEdit />} />
                 </Route>
-                <Route path="*" element={<Navigate to="tasks" />} />
+                <Route path={ROUTES.PROJECT_EDIT} element={<ProjectEdit />} />
+                <Route path="*" element={<Navigate to={ROUTES.PROJECTS} />} />
               </Route>
-              <Route path="add" element={<ProjectCreate />} />
-              <Route path="*" element={<Navigate to="/:projectId/tasks" />} />
+              <Route path={ROUTES.PROJECT_CREATE} element={<ProjectCreate />} />
+              <Route path="*" element={<Navigate to={ROUTES.PROJECT_TASKS} />} />
             </Route>
-            <Route path="users" element={<UsersPage />}>
-              <Route index element={<Navigate to="list" />} />
-              <Route path="list" element={<UsersList />} />
-              <Route path="*" element={<Navigate to="list" />} />
+            <Route path={ROUTES.USERS} element={<UsersPage />}>
+              <Route index element={<Navigate to={ROUTES.USERS_LIST} />} />
+              <Route path={ROUTES.USERS_LIST} element={<UsersList />} />
+              <Route path="*" element={<Navigate to={ROUTES.USERS_LIST} />} />
             </Route>
-            <Route path="*" element={<Navigate to={ROUTES.projects} />} />
+            <Route path="*" element={<Navigate to={ROUTES.PROJECTS} />} />
           </Route>
         </Routes>
       ) : (
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to={ROUTES.signIn} />} />
-            <Route path={ROUTES.signIn} element={<SignInPage />} />
-            <Route path={ROUTES.signUp} element={<SignUpPage />} />
-            <Route path="*" element={<Navigate to={ROUTES.signIn} />} />
+            <Route index element={<Navigate to={ROUTES.SIGN_IN} />} />
+            <Route path={ROUTES.SIGN_IN} element={<SignInPage />} />
+            <Route path={ROUTES.SIGN_UP} element={<SignUpPage />} />
+            <Route path="*" element={<Navigate to={ROUTES.SIGN_IN} />} />
           </Route>
         </Routes>
       )}

@@ -7,7 +7,7 @@ import Icon from '../Icon/Icon';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { changeSorting } from '../../../store/reducers/projects/projectsSlicer';
-import { AddCircle } from '@mui/icons-material';
+import { AddCircle, Edit } from '@mui/icons-material';
 
 const ProjectList = () => {
   const [search, setSearch] = useState<string>('');
@@ -60,11 +60,23 @@ const ProjectList = () => {
             <React.Fragment key={project.id}>
               <ListItemButton
                 sx={{ justifyContent: 'space-between', borderLeft: `2px solid ${project.color}` }}
-                onClick={() => navigate(`${project.id}/tasks`)}
+                onClick={e => {
+                  e.stopPropagation();
+                  navigate(`${project.id}/tasks`);
+                }}
               >
                 <Typography sx={{ my: '4px', fontWeight: projectId === String(project.id) ? 700 : 400 }} color="text.primary">
                   {project.title}
                 </Typography>
+                <IconButton
+                  color="primary"
+                  onClick={e => {
+                    e.stopPropagation();
+                    navigate(`${project.id}/edit`);
+                  }}
+                >
+                  <Edit />
+                </IconButton>
               </ListItemButton>
               <Divider variant="fullWidth" sx={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
             </React.Fragment>

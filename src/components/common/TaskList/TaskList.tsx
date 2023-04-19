@@ -11,7 +11,7 @@ const TaskList = () => {
   const navigate = useNavigate();
   const { projectId, taskId } = useParams();
   const { projects } = useAppSelector(state => state.projects);
-  const tasks = projects.filter(project => String(project.id) === projectId)[0].tasks;
+  const tasks = projects.filter(project => String(project.id) === projectId)[0]?.tasks;
 
   if (!tasks) return null;
   return (

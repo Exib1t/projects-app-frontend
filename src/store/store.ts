@@ -1,4 +1,4 @@
-import { configureStore, createAsyncThunk, createSlice, createStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/user/userSlicer';
 import globalSlicer from './reducers/globalSlicer';
 import projectsSlicer from './reducers/projects/projectsSlicer';
