@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Backdrop, Box, Button, CircularProgress, Stack, TextField, Typography } from '@mui/material';
-import { useUser } from '../../../../../hooks/user/useUser';
-import { useAppSelector } from '../../../../../hooks/global';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useUser } from '../../../hooks/user/useUser';
+import { useAppSelector } from '../../../hooks/global';
 
 interface IFormState {
   email: string;
@@ -10,7 +10,7 @@ interface IFormState {
   last_name: string;
 }
 
-const AccountTab = () => {
+const ProfileEditor = () => {
   const [isEditable, setIsEditable] = useState<boolean>(false);
   const { userId } = useAppSelector(state => state.user);
   const { data, saveUser, refresh } = useUser(userId);
@@ -93,4 +93,4 @@ const AccountTab = () => {
   );
 };
 
-export default AccountTab;
+export default ProfileEditor;

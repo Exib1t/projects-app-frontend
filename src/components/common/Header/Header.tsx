@@ -6,7 +6,8 @@ import { useAppSelector } from '../../../hooks/global';
 import Icon from '../Icon/Icon';
 import { IconTypes } from '../../../constants';
 import { useAuth } from '../../../services/authProvider';
-import { Logout, Person } from '@mui/icons-material';
+import { DarkMode, Logout, Person } from '@mui/icons-material';
+import { ROUTES } from '../../../Router/routes';
 
 const Header = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -32,7 +33,7 @@ const Header = () => {
         width: '100%',
         height: '64px',
         backgroundColor: 'secondary.dark',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+        borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
       <Stack justifyContent="center">
@@ -81,7 +82,7 @@ const Header = () => {
       <Stack direction="row" gap={1}>
         {authorized ? (
           <>
-            <IconButton sx={{ border: '1px solid rgba(255,255,255,0.15)' }} onClick={handleMenuOpen}>
+            <IconButton sx={{ border: `1px solid ${theme.palette.divider}` }} onClick={handleMenuOpen}>
               <Icon type={IconTypes.account} />
             </IconButton>
             <Menu anchorEl={menuAnchorEl} open={!!menuAnchorEl} onClose={handleMenuClose}>
@@ -89,7 +90,7 @@ const Header = () => {
                 <MenuItem
                   onClick={() => {
                     handleMenuClose();
-                    navigate('profile');
+                    navigate(ROUTES.PROFILE);
                   }}
                 >
                   <ListItemIcon>
@@ -97,7 +98,19 @@ const Header = () => {
                   </ListItemIcon>
                   <ListItemText>My account</ListItemText>
                 </MenuItem>
-                <Divider variant="middle" sx={{ background: 'rgba(255,255,255,.23)' }} />
+                <Divider variant="middle" sx={{ background: theme.palette.divider }} />
+                <MenuItem
+                  onClick={() => {
+                    handleMenuClose();
+                    navigate(ROUTES.APPEARANCE);
+                  }}
+                >
+                  <ListItemIcon>
+                    <DarkMode color="primary" />
+                  </ListItemIcon>
+                  <ListItemText>Appearance</ListItemText>
+                </MenuItem>
+                <Divider variant="middle" sx={{ background: theme.palette.divider }} />
                 <MenuItem
                   onClick={() => {
                     handleMenuClose();

@@ -15,6 +15,7 @@ export const darkTheme = createTheme({
       primary: '#D6D6D6',
       secondary: '#FFFFFF',
     },
+    divider: 'rgba(255,255,255,0.23)',
   },
   typography: {
     h1: {
@@ -36,6 +37,11 @@ export const darkTheme = createTheme({
   },
   spacing: [5, 10, 15, 20, 25, 30],
   components: {
+    MuiTypography: {
+      defaultProps: {
+        color: 'var(--text-primary)',
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: 'contained',
@@ -48,22 +54,22 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.23) !important',
+            borderColor: 'var(--divider) !important',
           },
           '& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.23) !important',
+            borderColor: 'var(--divider) !important',
           },
           '& .Mui-disabled .MuiOutlinedInput-input': {
             WebkitTextFillColor: 'rgba(255,255,255,0.43) !important',
           },
           '& .Mui-disabled:placeholder': {
-            color: 'rgba(255,255,255,0.23) !important',
+            color: 'var(--divider) !important',
           },
           '& .MuiFormLabel-root.Mui-disabled': {
-            color: 'rgba(255,255,255,1) !important',
+            color: 'var(--text-light) !important',
           },
           '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#DBA34E !important',
+            borderColor: 'var(--main) !important',
           },
         },
       },
@@ -72,10 +78,10 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.23) !important',
+            borderColor: 'var(--divider) !important',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#DBA34E !important',
+            borderColor: 'var(--main) !important',
           },
         },
       },
@@ -189,9 +195,10 @@ export const lightTheme = createTheme({
       dark: '#FFFFFF',
     },
     text: {
-      primary: '#181818',
-      secondary: '#000000',
+      primary: '#16161e',
+      secondary: '#1A1B22',
     },
+    divider: 'rgba(0,0,0,0.23)',
   },
   typography: {
     h1: {
@@ -213,6 +220,11 @@ export const lightTheme = createTheme({
   },
   spacing: [5, 10, 15, 20, 25, 30],
   components: {
+    MuiTypography: {
+      defaultProps: {
+        color: 'var(--text-primary)',
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: 'contained',
@@ -225,22 +237,22 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.23) !important',
+            borderColor: 'var(--divider) !important',
           },
           '& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.23) !important',
+            borderColor: 'var(--divider) !important',
           },
           '& .Mui-disabled .MuiOutlinedInput-input': {
-            WebkitTextFillColor: 'rgba(255,255,255,0.43) !important',
+            WebkitTextFillColor: 'rgba(0,0,0,0.43) !important',
           },
           '& .Mui-disabled:placeholder': {
-            color: 'rgba(255,255,255,0.23) !important',
+            color: 'var(--divider) !important',
           },
           '& .MuiFormLabel-root.Mui-disabled': {
-            color: 'rgba(255,255,255,1) !important',
+            color: 'var(--text-light) !important',
           },
           '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#DBA34E !important',
+            borderColor: 'var(--main) !important',
           },
         },
       },
@@ -249,10 +261,10 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.23) !important',
+            borderColor: 'var(--divider) !important',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#DBA34E !important',
+            borderColor: 'var(--main) !important',
           },
         },
       },
@@ -331,11 +343,23 @@ export const lightTheme = createTheme({
           borderRadius: 0,
         },
         option: {
-          color: '#181818',
+          color: '#1A1B22',
         },
         tag: {
           background: '#DBA34E',
           color: '#D6D6D6',
+        },
+        root: {
+          '& .MuiSvgIcon-root path': {
+            fill: '#1A1B22',
+          },
+        },
+      },
+    },
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          background: '#D6D6D6',
         },
       },
     },

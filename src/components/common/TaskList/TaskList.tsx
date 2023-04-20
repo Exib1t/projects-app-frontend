@@ -29,7 +29,7 @@ const TaskList = () => {
       <Typography variant="h6" textAlign="center" fontWeight={400} color="text.primary">
         Tasks
       </Typography>
-      <Stack direction="row" justifyContent="space-between" p={1} alignItems="center" borderBottom="1px solid rgba(255, 255, 255, 0.1)">
+      <Stack direction="row" justifyContent="space-between" p={1} alignItems="center" borderBottom={`1px solid ${theme.palette.divider}`}>
         <Typography variant="body1" color="text.primary">
           Amount: {tasks.length}
         </Typography>
@@ -58,7 +58,7 @@ const TaskList = () => {
                   </Typography>
                 </Stack>
               </ListItemButton>
-              <Divider variant="fullWidth" sx={{ backgroundColor: 'rgba(255,255,255,0.1)' }} />
+              <Divider variant="fullWidth" sx={{ backgroundColor: theme.palette.divider }} />
             </React.Fragment>
           );
         })}

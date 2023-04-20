@@ -1,10 +1,11 @@
 import React from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Divider, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Divider, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import Icon from '../../../../common/Icon/Icon';
 import { IconTypes } from '../../../../../constants';
 import { useAuth } from '../../../../../services/authProvider';
 
 const ProfileMenu = () => {
+  const theme = useTheme();
   const { logout } = useAuth();
 
   return (
@@ -15,7 +16,7 @@ const ProfileMenu = () => {
           <Icon type={IconTypes.account} />
         </ListItemIcon>
       </ListItemButton>
-      <Divider variant="middle" sx={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+      <Divider variant="middle" sx={{ backgroundColor: theme.palette.divider }} />
       <ListItemButton sx={{ justifyContent: 'space-between', px: 5 }}>
         <Accordion>
           <AccordionSummary>
@@ -34,14 +35,14 @@ const ProfileMenu = () => {
           </AccordionDetails>
         </Accordion>
       </ListItemButton>
-      <Divider variant="middle" sx={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+      <Divider variant="middle" sx={{ backgroundColor: theme.palette.divider }} />
       <ListItemButton sx={{ justifyContent: 'space-between', px: 5 }} disabled>
         <ListItemText primary="Other" />
         <ListItemIcon sx={{ minWidth: 'auto' }}>
           <Icon type={IconTypes.other} />
         </ListItemIcon>
       </ListItemButton>
-      <Divider variant="middle" sx={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+      <Divider variant="middle" sx={{ backgroundColor: theme.palette.divider }} />
       <ListItemButton sx={{ justifyContent: 'space-between', px: 5 }} onClick={logout}>
         <ListItemText primary="Logout" />
         <ListItemIcon sx={{ minWidth: 'auto' }}>

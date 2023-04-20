@@ -155,7 +155,6 @@ const TaskEdit = () => {
         <Typography variant="body1" fontWeight={400} color="text.primary">
           Description
         </Typography>
-        <div id="editor"></div>
         <ReactQuill modules={modules} value={updatedTask.description} onChange={val => setUpdatedTask(prevState => ({ ...prevState, description: val }))} />
       </Stack>
       <Stack

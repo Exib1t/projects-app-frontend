@@ -16,6 +16,7 @@ interface IFormState {
 }
 
 const SignUpForm: FC<Props> = () => {
+  const { theme: themeMode } = useAppSelector(state => state.global);
   const theme = useTheme();
   const {
     handleSubmit,
@@ -40,7 +41,7 @@ const SignUpForm: FC<Props> = () => {
         width: '100%',
         maxWidth: '500px',
         borderRadius: '5px',
-        boxShadow: '0 0 20px 2px rgba(0, 0, 0, 0.5)',
+        boxShadow: `0 0 20px 2px ${themeMode === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)'}`,
       }}
     >
       <Typography variant="h2" color={theme.palette.text.primary} textAlign="center" marginBottom={3}>

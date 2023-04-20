@@ -38,8 +38,10 @@ const UsersList = () => {
       disableColumnMenu: true,
       valueFormatter: ({ value }) => {
         if (availableProjects) {
+          console.log(value);
           const projectNames = value.map((projectId: number) => {
             const filteredProject = availableProjects.find(project => project.id === projectId);
+            console.log(projectId, filteredProject);
             if (filteredProject) {
               return filteredProject.title;
             } else {
@@ -97,15 +99,15 @@ const UsersList = () => {
         sx={{
           width: '100%',
           background: theme.palette.secondary.dark,
-          borderColor: 'rgba(255, 255, 255, .23)',
+          borderColor: theme.palette.divider,
           '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'rgba(255, 255, 255, .23)',
+            borderColor: theme.palette.divider,
           },
           '& .MuiSvgIcon-root path': {
             fill: theme.palette.text.primary,
           },
           '& .MuiIconButton-root.Mui-disabled path': {
-            fill: 'rgba(255, 255, 255, .23)',
+            fill: theme.palette.divider,
           },
         }}
       />

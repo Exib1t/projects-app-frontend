@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 const UsersPage = () => {
   return (
-    <Stack bgcolor="secondary.main" height="calc(100vh - 64px)">
+    <Stack bgcolor="secondary.main" sx={{ minHeight: 'calc(100vh - 64px)' }}>
       <Outlet />
     </Stack>
   );

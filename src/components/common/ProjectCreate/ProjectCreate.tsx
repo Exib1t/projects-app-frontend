@@ -9,9 +9,12 @@ import { toast } from 'react-toastify';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import Icon from '../Icon/Icon';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../Router/routes';
 
 const ProjectCreate = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { sorting } = useAppSelector(state => state.projects);
   const [availableUsers, setAvailableUsers] = useState<IUserSelect[]>([]);
@@ -36,9 +39,11 @@ const ProjectCreate = () => {
     e.preventDefault();
     api
       .post(`projects`, project)
-      .then(response => {
+      .then(({ data }) => {
         toast.success('Project created');
-        dispatch(getProjects(sorting));
+        dispatch(getProjects(sorting)).then(() => {
+          navigate(ROUTES.PROJECT_EDIT.replace(':projectId', String(data.id)));
+        });
       })
       .catch(err => {
         toast.error(err.message);

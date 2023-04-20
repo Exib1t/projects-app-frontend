@@ -49,7 +49,7 @@ const ProjectList = () => {
       </Stack>
 
       <List sx={{ width: '100%' }}>
-        <Divider variant="fullWidth" sx={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+        <Divider variant="fullWidth" sx={{ backgroundColor: theme.palette.divider }} />
         {!searchableProjects.length && (
           <Typography variant="body1" p={2} textAlign="center">
             You have no projects
@@ -78,7 +78,7 @@ const ProjectList = () => {
                   <Edit />
                 </IconButton>
               </ListItemButton>
-              <Divider variant="fullWidth" sx={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
+              <Divider variant="fullWidth" sx={{ backgroundColor: theme.palette.divider }} />
             </React.Fragment>
           );
         })}

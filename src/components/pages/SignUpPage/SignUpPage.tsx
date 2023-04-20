@@ -6,7 +6,7 @@ const SignUpPage = () => {
   const theme = useTheme();
 
   return (
-    <Stack justifyContent="center" alignItems="center" minHeight="100%" bgcolor={theme.palette.secondary.main} height="calc(100vh - 64px)">
+    <Stack justifyContent="center" alignItems="center" minHeight="100%" bgcolor={theme.palette.secondary.main} sx={{ minHeight: 'calc(100vh - 64px)' }}>
       <SignUpForm />
     </Stack>
   );

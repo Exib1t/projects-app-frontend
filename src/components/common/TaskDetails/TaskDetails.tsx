@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/global';
-import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Button, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
 import { IconTypes } from '../../../constants';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { taskHelpers } from '../../../helpers/taskHelpers';
+import { MoreVert } from '@mui/icons-material';
+import TaskMenu from './parts/TaskMenu';
 
 const TaskDetails = () => {
-  const theme = useTheme();
-  const navigate = useNavigate();
   const { taskId, projectId } = useParams();
   const { projects } = useAppSelector(state => state.projects);
   const project = projects.filter(project => String(project.id) === projectId)[0];
-  const task = project.tasks.filter(task => String(task.id) === taskId)[0];
+  const task = project?.tasks.filter(task => String(task.id) === taskId)[0];
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
+  const theme = useTheme();
+
+  const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
+  };
 
   if (!task) return null;
   return (
@@ -35,6 +45,10 @@ const TaskDetails = () => {
           {project.title} / {task.title}
         </Typography>
         <Stack direction="row" gap={1}>
+          <Button color="primary" sx={{ p: 0, minWidth: 34 }} onClick={handleMenuOpen}>
+            <MoreVert />
+          </Button>
+          <TaskMenu menuAnchorEl={menuAnchorEl} handleMenuClose={handleMenuClose} />
           <Button startIcon={<Icon type={IconTypes.editPencil} />} size="small" onClick={() => navigate('edit')}>
             Edit
           </Button>

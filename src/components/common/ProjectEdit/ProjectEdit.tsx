@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Stack, TextField, Typography, useTheme } from '@mui/material';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { IProject, IUserSelect } from '../../../models';
@@ -9,8 +9,12 @@ import { toast } from 'react-toastify';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import { useParams } from 'react-router-dom';
+import { MoreVert } from '@mui/icons-material';
+import TaskMenu from '../TaskDetails/parts/TaskMenu';
+import ProjectMenu from './parts/ProjectMenu';
 
 const ProjectEdit = () => {
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [availableUsers, setAvailableUsers] = useState<IUserSelect[]>([]);
   const { sorting } = useAppSelector(state => state.projects);
   const dispatch = useAppDispatch();
@@ -23,6 +27,13 @@ const ProjectEdit = () => {
     userIds: [],
     tasks: [],
   });
+
+  const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
+  };
 
   const handleInputChange = (e: any) => {
     setProject(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -77,7 +88,13 @@ const ProjectEdit = () => {
         <Typography color="primary.main" variant="h6" fontWeight={700} textAlign="center">
           Edit Project
         </Typography>
-        <GoBackBtn />
+        <Stack direction="row" gap={1}>
+          <Button color="primary" sx={{ p: 0, minWidth: 34 }} onClick={handleMenuOpen}>
+            <MoreVert />
+          </Button>
+          <ProjectMenu menuAnchorEl={menuAnchorEl} handleMenuClose={handleMenuClose} />
+          <GoBackBtn />
+        </Stack>
       </Stack>
       <Stack direction="row" gap={1} alignItems="center" mb={2}>
         <Typography variant="body1" fontWeight={400} width="100px">

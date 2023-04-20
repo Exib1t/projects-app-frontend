@@ -6,7 +6,6 @@ import Layout from '../components/common/Layout/Layout';
 import { useAuth } from '../services/authProvider';
 import { useAppSelector } from '../hooks/global';
 import ProfilePage from '../components/pages/ProfilePage/ProfilePage';
-import AccountTab from '../components/pages/ProfilePage/parts/AccountTab/AccountTab';
 import { ROUTES } from './routes';
 import ProjectsPage from '../components/pages/ProjectsPage/ProjectsPage';
 import TaskDetails from '../components/common/TaskDetails/TaskDetails';
@@ -16,10 +15,9 @@ import TaskEdit from '../components/common/TaskEdit/TaskEdit';
 import ProjectCreate from '../components/common/ProjectCreate/ProjectCreate';
 import UsersPage from '../components/pages/UsersPage/UsersPage';
 import UsersList from '../components/common/UsersList/UsersList';
-import Grid from '@mui/material/Grid/Grid';
 import { Backdrop, CircularProgress } from '@mui/material';
-import ProjectList from '../components/common/ProjectList/ProjectList';
 import ProjectEdit from '../components/common/ProjectEdit/ProjectEdit';
+import AppearancePage from '../components/pages/AppearancePage/AppearancePage';
 
 const Router = () => {
   const { authorized } = useAppSelector(state => state.user);
@@ -43,9 +41,8 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to={ROUTES.PROJECTS} />} />
-            <Route path={ROUTES.PROFILE} element={<ProfilePage />}>
-              <Route index element={<AccountTab />} />
-            </Route>
+            <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+            <Route path={ROUTES.APPEARANCE} element={<AppearancePage />} />
             <Route path={ROUTES.PROJECTS} element={<ProjectsPage />}>
               <Route path={ROUTES.PROJECT} element={<Outlet />}>
                 <Route index element={<Navigate to={ROUTES.PROJECT_TASKS} />} />
