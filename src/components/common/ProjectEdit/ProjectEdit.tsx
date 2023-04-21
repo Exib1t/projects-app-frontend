@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { MoreVert } from '@mui/icons-material';
 import TaskMenu from '../TaskDetails/parts/TaskMenu';
 import ProjectMenu from './parts/ProjectMenu';
+import ProjectProvider from '../../../services/ProjectProvider';
 
 const ProjectEdit = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -40,26 +41,21 @@ const ProjectEdit = () => {
   };
 
   const fetchAvailableUsers = async () => {
-    const { data } = await api.get('projects/get_users');
+    const { data } = await ProjectProvider.fetchAvailableUsers();
     setAvailableUsers(data);
   };
 
   const fetchEditableProject = async () => {
-    const { data } = await api.get(`projects/${projectId}`);
+    if (!projectId) return null;
+    const { data } = await ProjectProvider.fetchProject(projectId);
     setProject(data);
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    api
-      .put(`projects/${projectId}`, project)
-      .then(response => {
-        toast.success('Project updated');
-        dispatch(getProjects(sorting));
-      })
-      .catch(err => {
-        toast.error(err.message);
-      });
+    await ProjectProvider.updateProject(project);
+    toast.success('Project updated');
+    dispatch(getProjects(sorting));
   };
 
   useEffect(() => {

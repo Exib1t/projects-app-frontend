@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { IUser } from '../../models';
-import api from '../../services/api';
+import UserProvider from '../../services/UserProvider';
 
 export function useUser(id: number | string | null) {
   const [data, setData] = useState<IUser | null>(null);
 
   const fetchUser = async () => {
     if (id) {
-      const { data } = await api.get(`users/${id}`);
+      const { data } = await UserProvider.fetchUser(id);
       setData(data);
       return data;
     } else {
@@ -17,7 +17,7 @@ export function useUser(id: number | string | null) {
 
   const saveUser = async (updatedData: IUser) => {
     if (updatedData.id) {
-      const { data } = await api.put(`users/${updatedData.id}`, updatedData);
+      const { data } = await UserProvider.updateUser(updatedData);
       setData(data);
       return data;
     } else {

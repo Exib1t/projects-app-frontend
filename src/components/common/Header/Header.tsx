@@ -41,44 +41,46 @@ const Header = () => {
           Projects App
         </Typography>
       </Stack>
-      <Stack direction="row" alignItems="center" gap={2}>
-        <NavLink
-          to="projects"
-          className="b-navLink"
-          style={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          Projects
-        </NavLink>
-        <NavLink
-          to="timers"
-          className="b-navLink"
-          style={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          Timers
-        </NavLink>
-        <NavLink
-          to="stats"
-          className="b-navLink"
-          style={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          Stats
-        </NavLink>
-        <NavLink
-          to="users"
-          className="b-navLink"
-          style={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          Users
-        </NavLink>
-      </Stack>
+      {authorized && (
+        <Stack direction="row" alignItems="center" gap={2}>
+          <NavLink
+            to="projects"
+            className="b-navLink"
+            style={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            Projects
+          </NavLink>
+          <NavLink
+            to="timers"
+            className="b-navLink"
+            style={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            Timers
+          </NavLink>
+          <NavLink
+            to="stats"
+            className="b-navLink"
+            style={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            Stats
+          </NavLink>
+          <NavLink
+            to="users"
+            className="b-navLink"
+            style={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            Users
+          </NavLink>
+        </Stack>
+      )}
       <Stack direction="row" gap={1}>
         {authorized ? (
           <>

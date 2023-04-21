@@ -7,6 +7,7 @@ import api from '../../../../services/api';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/global';
 import { getProjects } from '../../../../store/reducers/projects/projectsThunk';
+import ProjectProvider from '../../../../services/ProjectProvider';
 
 type Props = {
   menuAnchorEl: HTMLElement | null;
@@ -21,7 +22,8 @@ const ProjectMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose }) => {
   const theme = useTheme();
 
   const handleDelete = async () => {
-    const { data } = await api.delete(`projects/${projectId}`);
+    if (!projectId) return null;
+    const { data } = await ProjectProvider.deleteProject(projectId);
     dispatch(getProjects(sorting));
     toast.error(data.msg);
     navigate(ROUTES.PROJECTS);

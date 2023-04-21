@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
-import { IconTypes } from '../../../constants';
+import { IconTypes, quillModules } from '../../../constants';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { IProjectTask } from '../../../models';
@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { setProjects } from '../../../store/reducers/projects/projectsSlicer';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
+import TaskProvider from '../../../services/TaskProvider';
 
 const TaskCreate = () => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const TaskCreate = () => {
     type: '',
     priority: '',
     description: '',
+    comments: [],
   });
 
   const handleInputChange = (e: any) => {
@@ -35,29 +37,11 @@ const TaskCreate = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    api
-      .post(`projects/${project.id}/tasks`, task)
-      .then(response => {
-        toast.success('Task created');
-        dispatch(getProjects(sorting)).then(() => {
-          navigate(`/projects/${project.id}/tasks/${response.data.id}`);
-        });
-      })
-      .catch(err => {
-        toast.error(err.message);
-      });
-  };
-
-  const toolbarOptions = [
-    [{ font: [] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ align: [] }],
-    [{ color: [] }, { background: [] }],
-    ['image'],
-    ['clean'],
-  ];
-  const modules = {
-    toolbar: toolbarOptions,
+    if (!projectId) return null;
+    const { data } = await TaskProvider.createOne(projectId, task);
+    toast.success('Task created');
+    await dispatch(getProjects(sorting));
+    navigate(`/projects/${project.id}/tasks/${data.id}`);
   };
 
   return (
@@ -161,7 +145,7 @@ const TaskCreate = () => {
         <Typography variant="body1" fontWeight={400} color="text.primary">
           Description
         </Typography>
-        <ReactQuill modules={modules} value={task.description} onChange={val => setTask(prevState => ({ ...prevState, description: val }))} />
+        <ReactQuill modules={quillModules} value={task.description} onChange={val => setTask(prevState => ({ ...prevState, description: val }))} />
       </Stack>
       <Stack
         bgcolor="secondary.dark"

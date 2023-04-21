@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box, CircularProgress, LinearProgress, Stack, Typography, useTheme } from '@mui/material';
 import api from '../../../services/api';
 import { IProjectSelect, IUser } from '../../../models';
+import UserProvider from '../../../services/UserProvider';
 
 const OverlayLoader = () => (
   <Box
@@ -39,15 +40,18 @@ const UsersList = () => {
       valueFormatter: ({ value }) => {
         if (availableProjects) {
           console.log(value);
-          const projectNames = value.map((projectId: number) => {
+          let projectNames = value.map((projectId: number) => {
             const filteredProject = availableProjects.find(project => project.id === projectId);
-            console.log(projectId, filteredProject);
             if (filteredProject) {
               return filteredProject.title;
             } else {
               return value;
             }
           });
+          if (projectNames.length > 3) {
+            projectNames = projectNames.slice(0, 3);
+            return `${projectNames.join(', ')}...`;
+          }
           return projectNames.join(', ');
         } else {
           return value;
@@ -57,12 +61,12 @@ const UsersList = () => {
   ];
 
   const fetchUsers = async () => {
-    const { data } = await api.get('users');
+    const { data } = await UserProvider.fetchUsers();
     setUsers(data);
   };
 
   const fetchAvailableProjects = async () => {
-    const { data } = await api.get('users/get_projects');
+    const { data } = await UserProvider.fetchUserProjects();
     setAvailableProjects(data);
   };
 

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { IProject } from '../../models';
-import api from '../../services/api';
+import ProjectProvider from '../../services/ProjectProvider';
 
 export function useProject(id: number | string | undefined) {
   const [project, setProject] = useState<IProject | null>(null);
   const getProject = async () => {
-    const { data } = await api.get(`projects/${id}`);
+    if (!id) return null;
+    const { data } = await ProjectProvider.fetchProject(id);
     setProject(data);
   };
 

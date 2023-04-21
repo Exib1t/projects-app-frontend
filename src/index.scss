@@ -56,6 +56,14 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 200px;
+
+  &.comments-show {
+    min-height: auto;
+
+    .ql-container, .ql-toolbar {
+      border: none;
+    }
+  }
 }
 
 .ql-toolbar {

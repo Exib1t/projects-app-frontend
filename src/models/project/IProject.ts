@@ -13,6 +13,13 @@ export interface IProjectTask {
   type: string;
   priority: string;
   description: string;
+  comments: IProjectTaskComment[];
+}
+
+export interface IProjectTaskComment {
+  id: number | null;
+  author: string;
+  body: string;
 }
 
 export interface IProjectSelect {

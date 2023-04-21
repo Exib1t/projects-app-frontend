@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import Icon from '../Icon/Icon';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../Router/routes';
+import ProjectProvider from '../../../services/ProjectProvider';
 
 const ProjectCreate = () => {
   const theme = useTheme();
@@ -31,23 +32,16 @@ const ProjectCreate = () => {
   };
 
   const fetchAvailableUsers = async () => {
-    const { data } = await api.get('projects/get_users');
+    const { data } = await ProjectProvider.fetchAvailableUsers();
     setAvailableUsers(data);
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    api
-      .post(`projects`, project)
-      .then(({ data }) => {
-        toast.success('Project created');
-        dispatch(getProjects(sorting)).then(() => {
-          navigate(ROUTES.PROJECT_EDIT.replace(':projectId', String(data.id)));
-        });
-      })
-      .catch(err => {
-        toast.error(err.message);
-      });
+    const { data } = await ProjectProvider.createProject(project);
+    toast.success('Project created');
+    await dispatch(getProjects(sorting));
+    navigate(ROUTES.PROJECT_EDIT.replace(':projectId', String(data.id)));
   };
 
   useEffect(() => {

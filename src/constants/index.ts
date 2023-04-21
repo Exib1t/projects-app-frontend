@@ -38,3 +38,15 @@ export const projectColors = [
   '#ffffff',
   '#000000',
 ];
+
+export const quillToolbarOptions = [
+  [{ font: [] }],
+  ['bold', 'italic', 'underline', 'strike'],
+  [{ align: [] }],
+  [{ color: [] }, { background: [] }],
+  ['image'],
+  ['clean'],
+];
+export const quillModules = {
+  toolbar: quillToolbarOptions,
+};

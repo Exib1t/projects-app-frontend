@@ -3,14 +3,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
-import { IconTypes } from '../../../constants';
+import { IconTypes, quillModules } from '../../../constants';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { IProjectTask } from '../../../models';
-import api from '../../../services/api';
 import { toast } from 'react-toastify';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
+import TaskProvider from '../../../services/TaskProvider';
 
 const TaskEdit = () => {
   const theme = useTheme();
@@ -29,28 +29,11 @@ const TaskEdit = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    api
-      .put(`projects/${project.id}/tasks/${taskId}`, updatedTask)
-      .then(() => {
-        toast.success('Task updated');
-        dispatch(getProjects(sorting));
-        navigate(`/projects/${project.id}/tasks/${taskId}`);
-      })
-      .catch(err => {
-        toast.error(err.message);
-      });
-  };
-
-  const toolbarOptions = [
-    [{ font: [] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ align: [] }],
-    [{ color: [] }, { background: [] }],
-    ['image'],
-    ['clean'],
-  ];
-  const modules = {
-    toolbar: toolbarOptions,
+    if (!projectId) return null;
+    await TaskProvider.updateOne(projectId, updatedTask);
+    toast.success('Task updated');
+    dispatch(getProjects(sorting));
+    navigate(`/projects/${project.id}/tasks/${taskId}`);
   };
 
   if (!updatedTask) return null;
@@ -155,7 +138,11 @@ const TaskEdit = () => {
         <Typography variant="body1" fontWeight={400} color="text.primary">
           Description
         </Typography>
-        <ReactQuill modules={modules} value={updatedTask.description} onChange={val => setUpdatedTask(prevState => ({ ...prevState, description: val }))} />
+        <ReactQuill
+          modules={quillModules}
+          value={updatedTask.description}
+          onChange={val => setUpdatedTask(prevState => ({ ...prevState, description: val }))}
+        />
       </Stack>
       <Stack
         bgcolor="secondary.dark"
