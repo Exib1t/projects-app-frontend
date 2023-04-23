@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import { Box, Button, Chip, Divider, IconButton, Stack, ToggleButton, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
-import { IconTypes, quillModules } from '../../../constants';
+import { IconTypes } from '../../../constants';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
@@ -225,14 +225,7 @@ const TaskDetails = () => {
         </Stack>
       </Stack>
       <Stack mt="auto" gap={1}>
-        <ReactQuill modules={quillModules} value={newComment} onChange={val => setNewComment(val === '<p><br></p>' ? '' : val)} />
-        <Button
-          color="primary"
-          onClick={handleCommentSubmit}
-          sx={{ width: 'max-content', marginLeft: 'auto', opacity: newComment ? 1 : 0.7, pointerEvents: newComment ? 'auto' : 'none' }}
-        >
-          Send
-        </Button>
+        {getCommentEditor()}
       </Stack>
     </Stack>
   );

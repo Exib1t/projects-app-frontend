@@ -4,6 +4,8 @@ export interface IProject {
   color: string;
   tasks: IProjectTask[];
   userIds: number[];
+  dateCreated: string;
+  dateUpdated: string;
 }
 
 export interface IProjectTask {
@@ -15,12 +17,22 @@ export interface IProjectTask {
   priority: string;
   description: string;
   comments: IProjectTaskComment[];
+  dateCreated: string;
+  dateUpdated: string;
 }
 
 export interface IProjectTaskComment {
   id: number | null;
-  author: string;
+  author: ICommentAuthor;
   body: string;
+  dateCreated: string;
+  dateUpdated: string;
+}
+
+interface ICommentAuthor {
+  id: number;
+  first_name: string;
+  last_name: string;
 }
 
 export interface IProjectSelect {
