@@ -4,8 +4,8 @@ export interface IProject {
   color: string;
   tasks: IProjectTask[];
   userIds: number[];
-  dateCreated: string;
-  dateUpdated: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IProjectTask {
@@ -17,16 +17,18 @@ export interface IProjectTask {
   priority: string;
   description: string;
   comments: IProjectTaskComment[];
-  dateCreated: string;
-  dateUpdated: string;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export interface IProjectTaskCreate extends Omit<IProjectTask, 'status' | 'createdAt' | 'updatedAt'> {}
 
 export interface IProjectTaskComment {
   id: number | null;
   author: ICommentAuthor;
   body: string;
-  dateCreated: string;
-  dateUpdated: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ICommentAuthor {

@@ -7,6 +7,8 @@ import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
+import { getComments } from '../../../store/reducers/comments/commentsThunk';
+import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
 
 type Props = {
   handleCommentCancel: () => void;
@@ -21,6 +23,8 @@ const CommentCreate: FC<Props> = ({ handleCommentCancel }) => {
     if (!projectId || !taskId) return null;
     await CommentProvider.createOne(projectId, taskId, comment);
     dispatch(getProjects(sorting));
+    dispatch(getTasks({ projectId }));
+    dispatch(getComments({ projectId, taskId }));
     toast.success('Comment added');
     handleCommentCancel();
   };

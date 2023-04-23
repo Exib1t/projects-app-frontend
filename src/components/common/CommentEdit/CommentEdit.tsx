@@ -8,6 +8,8 @@ import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { quillModules } from '../../../constants';
 import CommentProvider from '../../../services/CommentProvider';
 import { IProjectTaskComment } from '../../../models';
+import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
+import { getComments } from '../../../store/reducers/comments/commentsThunk';
 
 type Props = {
   handleCommentCancel: () => void;
@@ -23,6 +25,8 @@ const CommentEdit: FC<Props> = ({ handleCommentCancel, data }) => {
     if (!projectId || !taskId) return null;
     await CommentProvider.updateOne(projectId, taskId, comment);
     dispatch(getProjects(sorting));
+    dispatch(getTasks({ projectId }));
+    dispatch(getComments({ projectId, taskId }));
     toast.success('Comment added');
     handleCommentCancel();
   };

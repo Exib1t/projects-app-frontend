@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProject } from '../../../hooks/projects/useProject';
 import { Box, Button, Divider, List, ListItemButton, Stack, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
 import { IconTypes } from '../../../constants';
-import { useAppSelector } from '../../../hooks/global';
+import { useAppDispatch, useAppSelector } from '../../../hooks/global';
+import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
+import { getComments } from '../../../store/reducers/comments/commentsThunk';
 
 const TaskList = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { projectId, taskId } = useParams();
-  const { projects } = useAppSelector(state => state.projects);
-  const tasks = projects.filter(project => String(project.id) === projectId)[0]?.tasks;
+  const { tasks, sorting } = useAppSelector(state => state.tasks);
+  const dispatch = useAppDispatch();
 
-  if (!tasks) return null;
+  useEffect(() => {
+    if (projectId && taskId) {
+      dispatch(getTasks({ projectId, sorting }));
+      dispatch(getComments({ projectId, taskId }));
+    }
+  }, []);
+
   return (
     <Stack
       sx={{

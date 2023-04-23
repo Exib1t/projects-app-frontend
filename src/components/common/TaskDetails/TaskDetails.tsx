@@ -17,13 +17,17 @@ import CommentCreate from '../CommentCreate/CommentCreate';
 import CommentEdit from '../CommentEdit/CommentEdit';
 import { IProjectTaskComment } from '../../../models';
 import TaskProvider from '../../../services/TaskProvider';
+import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
+import { getComments } from '../../../store/reducers/comments/commentsThunk';
 
 const TaskDetails = () => {
   const { taskId, projectId } = useParams();
-  const { projects, sorting } = useAppSelector(state => state.projects);
+  const { projects } = useAppSelector(state => state.projects);
+  const { tasks, sorting } = useAppSelector(state => state.tasks);
+  const { comments } = useAppSelector(state => state.comments);
   const { userId } = useAppSelector(state => state.user);
-  const project = projects.filter(project => String(project.id) === projectId)[0];
-  const task = project?.tasks.filter(task => String(task.id) === taskId)[0];
+  const project = projects.find(project => project.id === Number(projectId));
+  const task = tasks.filter(task => String(task.id) === taskId)[0];
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [commentState, setCommentState] = useState<'create' | 'edit' | 'none'>('none');
   const [editableComment, setEditableComment] = useState<IProjectTaskComment | null>(null);
@@ -31,7 +35,7 @@ const TaskDetails = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  if (!task || !projectId || !taskId) return null;
+  if (!task || !projectId || !taskId || !project) return null;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -44,6 +48,8 @@ const TaskDetails = () => {
     if (!projectId || !taskId) return null;
     await CommentProvider.deleteOne(projectId, taskId, commentId);
     dispatch(getProjects(sorting));
+    dispatch(getTasks({ projectId, sorting }));
+    dispatch(getComments({ projectId, taskId }));
     toast.error('Comment deleted');
   };
 
@@ -59,6 +65,8 @@ const TaskDetails = () => {
   const handleStatusChange = async (e: MouseEvent<HTMLElement>, value: 1 | 2 | 3) => {
     await TaskProvider.updateStatus(projectId, taskId, value);
     dispatch(getProjects(sorting));
+    dispatch(getTasks({ projectId, sorting }));
+    dispatch(getComments({ projectId, taskId }));
     toast.success('Status updated');
   };
 
@@ -148,13 +156,13 @@ const TaskDetails = () => {
         <Box display="inline-flex" width="130px" color="text.primary">
           Date Created:
         </Box>{' '}
-        {new Date(task.dateCreated).toLocaleString()}
+        {new Date(task.createdAt).toLocaleString()}
       </Stack>
       <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }}>
         <Box display="inline-flex" width="130px" color="text.primary">
           Date Updated:
         </Box>{' '}
-        {new Date(task.dateUpdated).toLocaleString()}
+        {new Date(task.updatedAt).toLocaleString()}
       </Stack>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight={400} color="text.primary">
@@ -174,19 +182,19 @@ const TaskDetails = () => {
           Comments
         </Typography>
         <Stack gap={5} bgcolor="secondary.main" borderRadius={'5px'} p={2}>
-          {task.comments.length === 0 && (
+          {comments.length === 0 && (
             <Typography variant="body1" textAlign="center" fontWeight={500} color="text.primary">
               No comments yet
             </Typography>
           )}
-          {task.comments.map((comment, idx) => (
+          {comments.map((comment, idx) => (
             <Stack gap={1} key={idx}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="body2" fontWeight={700} color="text.primary">
                   <span className="-color_primary">{`${comment.author.first_name} ${comment.author.last_name}`} </span>
-                  {comment.dateCreated === comment.dateUpdated
-                    ? `added a comment ${new Date(comment.dateCreated).toLocaleString()}`
-                    : `updated a comment ${new Date(comment.dateUpdated).toLocaleString()}`}
+                  {comment.createdAt === comment.updatedAt
+                    ? `added a comment ${new Date(comment.createdAt).toLocaleString()}`
+                    : `updated a comment ${new Date(comment.updatedAt).toLocaleString()}`}
                 </Typography>
                 <Stack direction="row" justifyContent="flex-end" alignItems="center">
                   {comment.author.id === Number(userId) && (
@@ -219,7 +227,7 @@ const TaskDetails = () => {
                 readOnly
                 value={comment.body}
               />
-              {task.comments.length !== idx + 1 && <Divider />}
+              {comments.length !== idx + 1 && <Divider />}
             </Stack>
           ))}
         </Stack>

@@ -39,7 +39,6 @@ const UsersList = () => {
       disableColumnMenu: true,
       valueFormatter: ({ value }) => {
         if (availableProjects) {
-          console.log(value);
           let projectNames = value.map((projectId: number) => {
             const filteredProject = availableProjects.find(project => project.id === projectId);
             if (filteredProject) {

@@ -11,16 +11,15 @@ import { toast } from 'react-toastify';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import TaskProvider from '../../../services/TaskProvider';
+import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
 
 const TaskEdit = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { projectId, taskId } = useParams();
-  const { projects, sorting } = useAppSelector(state => state.projects);
-  const project = projects.filter(project => String(project.id) === projectId)[0];
-  const task = project.tasks.filter(task => String(task.id) === taskId)[0];
-
+  const { tasks, sorting } = useAppSelector(state => state.tasks);
+  const task = tasks.filter(task => String(task.id) === taskId)[0];
   const [updatedTask, setUpdatedTask] = useState<IProjectTask>(task);
 
   const handleInputChange = (e: any) => {
@@ -32,8 +31,8 @@ const TaskEdit = () => {
     if (!projectId) return null;
     await TaskProvider.updateOne(projectId, updatedTask);
     toast.success('Task updated');
-    dispatch(getProjects(sorting));
-    navigate(`/projects/${project.id}/tasks/${taskId}`);
+    dispatch(getTasks({ projectId, sorting }));
+    navigate(`/projects/${projectId}/tasks/${taskId}`);
   };
 
   if (!updatedTask) return null;

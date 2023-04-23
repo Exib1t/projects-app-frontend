@@ -6,13 +6,14 @@ import Icon from '../Icon/Icon';
 import { IconTypes, quillModules } from '../../../constants';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { IProjectTask } from '../../../models';
+import { IProjectTask, IProjectTaskCreate } from '../../../models';
 import api from '../../../services/api';
 import { toast } from 'react-toastify';
 import { setProjects } from '../../../store/reducers/projects/projectsSlicer';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import TaskProvider from '../../../services/TaskProvider';
+import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
 
 const TaskCreate = () => {
   const theme = useTheme();
@@ -20,8 +21,9 @@ const TaskCreate = () => {
   const { projectId } = useParams();
   const dispatch = useAppDispatch();
   const { projects, sorting } = useAppSelector(state => state.projects);
+  const { tasks, sorting: taskSorting } = useAppSelector(state => state.tasks);
   const project = projects.filter(project => String(project.id) === projectId)[0];
-  const [task, setTask] = useState<IProjectTask>({
+  const [task, setTask] = useState<IProjectTaskCreate>({
     id: null,
     title: 'New Task',
     subtitle: '',
@@ -41,6 +43,7 @@ const TaskCreate = () => {
     const { data } = await TaskProvider.createOne(projectId, task);
     toast.success('Task created');
     await dispatch(getProjects(sorting));
+    await dispatch(getTasks({ projectId, sorting: taskSorting }));
     navigate(`/projects/${project.id}/tasks/${data.id}`);
   };
 

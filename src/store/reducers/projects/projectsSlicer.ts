@@ -15,7 +15,7 @@ const initialState: InitialStateType = {
 };
 
 const projectsSlicer = createSlice({
-  name: 'global',
+  name: 'projects',
   initialState,
   reducers: {
     setProjects: (state, action: PayloadAction<IProject[]>) => {
