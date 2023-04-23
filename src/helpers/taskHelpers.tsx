@@ -52,4 +52,15 @@ export const taskHelpers = {
         return null;
     }
   },
+
+  getStatusText: (statusCode: 1 | 2 | 3) => {
+    switch (statusCode) {
+      case 1:
+        return 'To Do';
+      case 2:
+        return 'In Progress';
+      case 3:
+        return 'Done';
+    }
+  },
 };

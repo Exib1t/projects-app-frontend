@@ -180,6 +180,21 @@ export const darkTheme = createTheme({
         },
       },
     },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: '#DBA34E',
+          borderColor: '#DBA34E',
+          paddingTop: '0',
+          paddingBottom: '0',
+          fontWeight: 700,
+          '&.Mui-selected': {
+            background: '#DBA34E',
+            color: '#1A1B22',
+          },
+        },
+      },
+    },
   },
 });
 
@@ -360,6 +375,21 @@ export const lightTheme = createTheme({
       styleOverrides: {
         paper: {
           background: '#D6D6D6',
+        },
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          color: '#DBA34E',
+          borderColor: '#DBA34E',
+          paddingTop: '0',
+          paddingBottom: '0',
+          fontWeight: 700,
+          '&.Mui-selected': {
+            background: '#DBA34E',
+            color: '#1A1B22',
+          },
         },
       },
     },

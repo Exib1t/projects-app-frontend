@@ -11,6 +11,8 @@ export const ROUTES = {
   PROJECT_TASK_CREATE: '/projects/:projectId/tasks/add',
   PROJECT_TASK: '/projects/:projectId/tasks/:taskId',
   PROJECT_TASK_EDIT: '/projects/:projectId/tasks/:taskId/edit',
+  PROJECT_TASK_COMMENT_CREATE: '/projects/:projectId/tasks/:taskId/comments',
+  PROJECT_TASK_COMMENT_EDIT: '/projects/:projectId/tasks/:taskId/comments/:commentId',
   USERS: '/users',
   USERS_LIST: '/users/list',
 };

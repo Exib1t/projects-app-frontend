@@ -11,6 +11,7 @@ export interface IProjectTask {
   title: string;
   subtitle: string;
   type: string;
+  status: 1 | 2 | 3;
   priority: string;
   description: string;
   comments: IProjectTaskComment[];

@@ -126,8 +126,10 @@ body {
 .ql-formats button:hover, .ql-formats .ql-picker:hover  {
   background: #a97e23 !important;
 
-  & path, & line, & rect {
-    stroke: var(--secondary-dark) !important;
+  &:not(.ql-align) {
+    & path, & line, & rect {
+      stroke: var(--secondary-dark) !important;
+    }
   }
 }
 

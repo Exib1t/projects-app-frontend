@@ -1,43 +1,43 @@
 import React, { MouseEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
-import { Box, Button, Divider, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Button, Chip, Divider, IconButton, Stack, ToggleButton, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
 import { IconTypes, quillModules } from '../../../constants';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { taskHelpers } from '../../../helpers/taskHelpers';
-import { Delete, MoreVert } from '@mui/icons-material';
+import { AddComment, Delete, Edit, MoreVert } from '@mui/icons-material';
 import TaskMenu from './parts/TaskMenu';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { toast } from 'react-toastify';
 import CommentProvider from '../../../services/CommentProvider';
+import CommentCreate from '../CommentCreate/CommentCreate';
+import CommentEdit from '../CommentEdit/CommentEdit';
+import { IProjectTaskComment } from '../../../models';
+import TaskProvider from '../../../services/TaskProvider';
 
 const TaskDetails = () => {
   const { taskId, projectId } = useParams();
   const { projects, sorting } = useAppSelector(state => state.projects);
+  const { userId } = useAppSelector(state => state.user);
   const project = projects.filter(project => String(project.id) === projectId)[0];
   const task = project?.tasks.filter(task => String(task.id) === taskId)[0];
-  const [newComment, setNewComment] = useState<string>('');
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [commentState, setCommentState] = useState<'create' | 'edit' | 'none'>('none');
+  const [editableComment, setEditableComment] = useState<IProjectTaskComment | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
+
+  if (!task || !projectId || !taskId) return null;
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setMenuAnchorEl(event.currentTarget);
   };
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
-  };
-
-  const handleCommentSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
-    if (!projectId || !taskId) return null;
-    await CommentProvider.createOne(projectId, taskId, newComment);
-    dispatch(getProjects(sorting));
-    toast.success('Comment added');
-    setNewComment('');
   };
 
   const handleCommentDelete = async (e: MouseEvent<HTMLButtonElement>, commentId: number) => {
@@ -47,7 +47,47 @@ const TaskDetails = () => {
     toast.error('Comment deleted');
   };
 
-  if (!task) return null;
+  const handleCommentCancel = () => {
+    setCommentState('none');
+  };
+
+  const handleCommentEdit = (e: MouseEvent<HTMLButtonElement>, comment: IProjectTaskComment) => {
+    setCommentState('edit');
+    setEditableComment(comment);
+  };
+
+  const handleStatusChange = async (e: MouseEvent<HTMLElement>, value: 1 | 2 | 3) => {
+    await TaskProvider.updateStatus(projectId, taskId, value);
+    dispatch(getProjects(sorting));
+    toast.success('Status updated');
+  };
+
+  const getCommentEditor = () => {
+    switch (commentState) {
+      case 'create':
+        return <CommentCreate handleCommentCancel={handleCommentCancel} />;
+      case 'edit':
+        if (editableComment) {
+          return <CommentEdit handleCommentCancel={handleCommentCancel} data={editableComment} />;
+        } else {
+          return null;
+        }
+      default:
+        return (
+          <Button
+            color="primary"
+            startIcon={<AddComment />}
+            onClick={() => setCommentState('create')}
+            sx={{
+              width: 'max-content',
+            }}
+          >
+            Add comment
+          </Button>
+        );
+    }
+  };
+
   return (
     <Stack
       sx={{
@@ -65,6 +105,11 @@ const TaskDetails = () => {
           {project.title} / {task.title}
         </Typography>
         <Stack direction="row" gap={1}>
+          <ToggleButtonGroup color="primary" size="small" value={task.status} exclusive onChange={handleStatusChange}>
+            <ToggleButton value={1}>To Do</ToggleButton>
+            <ToggleButton value={2}>In Progress</ToggleButton>
+            <ToggleButton value={3}>Done</ToggleButton>
+          </ToggleButtonGroup>
           <Button color="primary" sx={{ p: 0, minWidth: 34 }} onClick={handleMenuOpen}>
             <MoreVert />
           </Button>
@@ -76,22 +121,40 @@ const TaskDetails = () => {
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }} color="text.primary">
-        <Box display="inline-flex" width="100px">
+        <Box display="inline-flex" width="130px">
           Subtitle:
         </Box>{' '}
         <b style={{ fontWeight: 500 }}>{task.subtitle}</b>
       </Stack>
       <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }}>
-        <Box display="inline-flex" width="100px" color="text.primary">
+        <Box display="inline-flex" width="130px" color="text.primary">
           Type:
         </Box>{' '}
         {taskHelpers.getTypeIcon(task.type)}
       </Stack>
       <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }}>
-        <Box display="inline-flex" width="100px" color="text.primary">
+        <Box display="inline-flex" width="130px" color="text.primary">
+          Status:
+        </Box>{' '}
+        <Chip variant="outlined" color="primary" sx={{ fontWeight: 700 }} label={taskHelpers.getStatusText(task.status)} />
+      </Stack>
+      <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }}>
+        <Box display="inline-flex" width="130px" color="text.primary">
           Priority:
         </Box>{' '}
         {taskHelpers.getPriorityIcon(task.priority)}
+      </Stack>
+      <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }}>
+        <Box display="inline-flex" width="130px" color="text.primary">
+          Date Created:
+        </Box>{' '}
+        {new Date(task.dateCreated).toLocaleString()}
+      </Stack>
+      <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 400 }}>
+        <Box display="inline-flex" width="130px" color="text.primary">
+          Date Updated:
+        </Box>{' '}
+        {new Date(task.dateUpdated).toLocaleString()}
       </Stack>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight={400} color="text.primary">
@@ -117,10 +180,37 @@ const TaskDetails = () => {
             </Typography>
           )}
           {task.comments.map((comment, idx) => (
-            <Stack gap={1} position="relative">
-              <Typography variant="body2" fontWeight={700} color="text.primary">
-                {comment.author}
-              </Typography>
+            <Stack gap={1} key={idx}>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant="body2" fontWeight={700} color="text.primary">
+                  <span className="-color_primary">{`${comment.author.first_name} ${comment.author.last_name}`} </span>
+                  {comment.dateCreated === comment.dateUpdated
+                    ? `added a comment ${new Date(comment.dateCreated).toLocaleString()}`
+                    : `updated a comment ${new Date(comment.dateUpdated).toLocaleString()}`}
+                </Typography>
+                <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                  {comment.author.id === Number(userId) && (
+                    <IconButton
+                      color="primary"
+                      onClick={e => {
+                        handleCommentEdit(e, comment);
+                      }}
+                    >
+                      <Edit fontSize="small" />
+                    </IconButton>
+                  )}
+                  <IconButton
+                    color="error"
+                    onClick={e => {
+                      if (comment.id) {
+                        handleCommentDelete(e, comment.id);
+                      }
+                    }}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                </Stack>
+              </Stack>
               <ReactQuill
                 modules={{
                   toolbar: false,
@@ -129,21 +219,6 @@ const TaskDetails = () => {
                 readOnly
                 value={comment.body}
               />
-              <IconButton
-                color="error"
-                onClick={e => {
-                  if (comment.id) {
-                    handleCommentDelete(e, comment.id);
-                  }
-                }}
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}
-              >
-                <Delete fontSize="small" />
-              </IconButton>
               {task.comments.length !== idx + 1 && <Divider />}
             </Stack>
           ))}

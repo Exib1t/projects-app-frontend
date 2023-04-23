@@ -13,6 +13,12 @@ class TaskProvider {
   updateOne = async (projectId: string | number, updatedTask: IProjectTask) => {
     return api.put(`projects/${projectId}/tasks/${updatedTask.id}`, updatedTask);
   };
+
+  updateStatus = async (projectId: string | number, taskId: string | number, status: 1 | 2 | 3) => {
+    return api.post(`projects/${projectId}/tasks/${taskId}/set_status`, {
+      status,
+    });
+  };
 }
 
 export default new TaskProvider();
