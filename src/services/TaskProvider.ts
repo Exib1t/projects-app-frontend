@@ -19,6 +19,12 @@ class TaskProvider {
       status,
     });
   };
+
+  logTime = async (projectId: string | number, taskId: string | number, timeLogged: string) => {
+    return api.post(`projects/${projectId}/tasks/${taskId}/log_time`, {
+      logged: timeLogged,
+    });
+  };
 }
 
 export default new TaskProvider();

@@ -63,4 +63,15 @@ export const taskHelpers = {
         return 'Done';
     }
   },
+
+  getStatusColor: (statusCode: 1 | 2 | 3): 'primary' | 'info' | 'success' => {
+    switch (statusCode) {
+      case 1:
+        return 'primary';
+      case 2:
+        return 'info';
+      case 3:
+        return 'success';
+    }
+  },
 };

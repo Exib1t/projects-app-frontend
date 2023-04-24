@@ -1,7 +1,7 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Stack, TextField, Typography, useTheme } from '@mui/material';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
-import { IProject, IUserSelect } from '../../../models';
+import { IProject, IProjectCreate, IUserSelect } from '../../../models';
 import { CirclePicker } from 'react-color';
 import { projectColors } from '../../../constants';
 import api from '../../../services/api';
@@ -13,6 +13,8 @@ import { MoreVert } from '@mui/icons-material';
 import TaskMenu from '../TaskDetails/parts/TaskMenu';
 import ProjectMenu from './parts/ProjectMenu';
 import ProjectProvider from '../../../services/ProjectProvider';
+import NotFound from '../NotFound/NotFound';
+import { ROUTES } from '../../../Router/routes';
 
 const ProjectEdit = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,7 +23,7 @@ const ProjectEdit = () => {
   const dispatch = useAppDispatch();
   const { projectId } = useParams();
   const theme = useTheme();
-  const [project, setProject] = useState<IProject>({
+  const [project, setProject] = useState<IProjectCreate>({
     id: null,
     title: '',
     color: '',
@@ -62,6 +64,8 @@ const ProjectEdit = () => {
     fetchAvailableUsers();
     fetchEditableProject();
   }, []);
+
+  if (!project?.id) return <NotFound title="Project Not Found" btnLabel="Back to projects" link={ROUTES.PROJECTS} />;
 
   return (
     <Box

@@ -3,11 +3,11 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Undo } from '@mui/icons-material';
 
-const GoBackBtn = () => {
+const GoBackBtn = ({ size = 'small' }: { size?: 'small' | 'large' | 'medium' }) => {
   const navigate = useNavigate();
 
   return (
-    <Button color="primary" size="small" startIcon={<Undo />} onClick={() => navigate(-1)}>
+    <Button color="primary" size={size} startIcon={<Undo />} onClick={() => navigate(-1)}>
       Back
     </Button>
   );

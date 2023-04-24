@@ -8,12 +8,19 @@ export interface IProject {
   updatedAt: string;
 }
 
+export interface IProjectCreate extends Omit<IProject, 'createdAt' | 'updatedAt'> {}
+
 export interface IProjectTask {
   id: number | null;
   title: string;
   subtitle: string;
   type: string;
   status: 1 | 2 | 3;
+  time: {
+    estimated: number;
+    remaining: number;
+    logged: number;
+  };
   priority: string;
   description: string;
   comments: IProjectTaskComment[];
@@ -21,7 +28,7 @@ export interface IProjectTask {
   updatedAt: string;
 }
 
-export interface IProjectTaskCreate extends Omit<IProjectTask, 'status' | 'createdAt' | 'updatedAt'> {}
+export interface IProjectTaskCreate extends Omit<IProjectTask, 'status' | 'createdAt' | 'updatedAt' | 'time'> {}
 
 export interface IProjectTaskComment {
   id: number | null;

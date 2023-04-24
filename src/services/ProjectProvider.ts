@@ -1,5 +1,5 @@
 import api from './api';
-import { IProject } from '../models';
+import { IProject, IProjectCreate } from '../models';
 
 class ProjectProvider {
   fetchProject = async (projectId: number | string) => {
@@ -10,11 +10,11 @@ class ProjectProvider {
     return api.get('projects/get_users');
   };
 
-  updateProject = async (project: IProject) => {
+  updateProject = async (project: IProjectCreate) => {
     return api.put(`projects/${project.id}`, project);
   };
 
-  createProject = async (project: IProject) => {
+  createProject = async (project: IProjectCreate) => {
     return api.post(`projects`, project);
   };
 

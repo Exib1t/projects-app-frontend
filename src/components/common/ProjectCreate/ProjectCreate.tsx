@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
-import { IProject, IUserSelect } from '../../../models';
+import { IProject, IProjectCreate, IUserSelect } from '../../../models';
 import { CirclePicker } from 'react-color';
 import { IconTypes, projectColors } from '../../../constants';
 import api from '../../../services/api';
@@ -19,7 +19,7 @@ const ProjectCreate = () => {
   const dispatch = useAppDispatch();
   const { sorting } = useAppSelector(state => state.projects);
   const [availableUsers, setAvailableUsers] = useState<IUserSelect[]>([]);
-  const [project, setProject] = useState<IProject>({
+  const [project, setProject] = useState<IProjectCreate>({
     id: null,
     title: '',
     color: '',

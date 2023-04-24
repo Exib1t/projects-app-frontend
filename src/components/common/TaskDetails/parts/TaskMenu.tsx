@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, useTheme } from '@mui/material';
-import { Delete, Edit, Logout, Person } from '@mui/icons-material';
+import { Delete, Edit, Logout, MoreTime, Person } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../../../../Router/routes';
 import api from '../../../../services/api';
@@ -13,9 +13,10 @@ import { getTasks } from '../../../../store/reducers/tasks/tasksThunk';
 type Props = {
   menuAnchorEl: HTMLElement | null;
   handleMenuClose: () => void;
+  handleTimeMenuOpen: () => void;
 };
 
-const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose }) => {
+const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose, handleTimeMenuOpen }) => {
   const { sorting } = useAppSelector(state => state.projects);
   const { sorting: taskSorting } = useAppSelector(state => state.tasks);
   const { taskId, projectId } = useParams();
@@ -35,6 +36,18 @@ const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose }) => {
   return (
     <Menu anchorEl={menuAnchorEl} open={!!menuAnchorEl} onClose={handleMenuClose}>
       <MenuList sx={{ width: '200px', maxWidth: '100%', p: '0', pt: 1 }}>
+        <MenuItem
+          onClick={() => {
+            handleMenuClose();
+            handleTimeMenuOpen();
+          }}
+        >
+          <ListItemIcon>
+            <MoreTime color="primary" />
+          </ListItemIcon>
+          <ListItemText>Log Time</ListItemText>
+        </MenuItem>
+        <Divider variant="middle" sx={{ background: theme.palette.divider }} />
         <MenuItem
           onClick={() => {
             handleMenuClose();

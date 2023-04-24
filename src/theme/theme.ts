@@ -15,6 +15,11 @@ export const darkTheme = createTheme({
       primary: '#D6D6D6',
       secondary: '#FFFFFF',
     },
+    success: {
+      main: '#20b620',
+      dark: '#008f00',
+      light: '#00FF00',
+    },
     divider: 'rgba(255,255,255,0.23)',
   },
   typography: {
@@ -212,6 +217,11 @@ export const lightTheme = createTheme({
     text: {
       primary: '#16161e',
       secondary: '#1A1B22',
+    },
+    success: {
+      main: '#20b620',
+      dark: '#008f00',
+      light: '#00FF00',
     },
     divider: 'rgba(0,0,0,0.23)',
   },

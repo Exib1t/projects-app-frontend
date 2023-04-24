@@ -15,12 +15,21 @@ const TaskList = () => {
   const { tasks, sorting } = useAppSelector(state => state.tasks);
   const dispatch = useAppDispatch();
 
+  const handleTaskChange = async (taskId: number | null) => {
+    if (taskId && projectId) {
+      await dispatch(getComments({ projectId, taskId }));
+      navigate(String(taskId));
+    }
+  };
+
   useEffect(() => {
-    if (projectId && taskId) {
+    if (projectId) {
       dispatch(getTasks({ projectId, sorting }));
+    }
+    if (projectId && taskId) {
       dispatch(getComments({ projectId, taskId }));
     }
-  }, []);
+  }, [projectId, taskId]);
 
   return (
     <Stack
@@ -50,7 +59,7 @@ const TaskList = () => {
         {tasks.map(task => {
           return (
             <React.Fragment key={task.id}>
-              <ListItemButton sx={{ gap: 1, alignItems: 'flex-start' }} onClick={() => navigate(String(task.id))}>
+              <ListItemButton sx={{ gap: 1, alignItems: 'flex-start' }} onClick={() => handleTaskChange(task.id)}>
                 <Box mt={'5px'}>{getTypeIcon(task.type)}</Box>
                 <Stack gap={'5px'}>
                   <Typography color="primary.main" fontWeight={taskId === String(task.id) ? 700 : 400}>
