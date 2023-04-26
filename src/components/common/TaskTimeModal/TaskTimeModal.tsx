@@ -11,13 +11,14 @@ import { AxiosError } from 'axios';
 type Props = {
   open: boolean;
   handleClose: () => void;
+  remaining: number;
 };
 
 interface IFormState {
   timeLogged: string;
 }
 
-const TaskTimeModal: FC<Props> = ({ open, handleClose }) => {
+const TaskTimeModal: FC<Props> = ({ open, handleClose, remaining }) => {
   const { projectId, taskId } = useParams();
   const { sorting } = useAppSelector(state => state.tasks);
   const { error } = useAppSelector(state => state.global);
@@ -28,7 +29,7 @@ const TaskTimeModal: FC<Props> = ({ open, handleClose }) => {
     if (projectId && taskId) {
       try {
         dispatch(setError(null));
-        await TaskProvider.logTime(projectId, taskId, data.timeLogged);
+        await TaskProvider.logTime(projectId, taskId, data.timeLogged, remaining);
         dispatch(getTasks({ projectId, sorting }));
         handleClose();
         reset();

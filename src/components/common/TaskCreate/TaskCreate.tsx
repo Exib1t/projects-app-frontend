@@ -21,7 +21,7 @@ const TaskCreate = () => {
   const { projectId } = useParams();
   const dispatch = useAppDispatch();
   const { projects, sorting } = useAppSelector(state => state.projects);
-  const { tasks, sorting: taskSorting } = useAppSelector(state => state.tasks);
+  const { sorting: taskSorting } = useAppSelector(state => state.tasks);
   const project = projects.filter(project => String(project.id) === projectId)[0];
   const [task, setTask] = useState<IProjectTaskCreate>({
     id: null,
@@ -31,6 +31,7 @@ const TaskCreate = () => {
     priority: '',
     description: '',
     comments: [],
+    estimate: '',
   });
 
   const handleInputChange = (e: any) => {
@@ -143,6 +144,12 @@ const TaskCreate = () => {
             </MenuItem>
           </Select>
         </FormControl>
+      </Stack>
+      <Stack direction="row" gap={1} alignItems="center">
+        <Typography variant="body1" fontWeight={400} width="100px" color="text.primary">
+          Estimate Remaining:
+        </Typography>
+        <TextField size="small" placeholder="12h" value={task.estimate} name="estimate" onChange={handleInputChange} sx={{ width: '100px' }} required />
       </Stack>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight={400} color="text.primary">

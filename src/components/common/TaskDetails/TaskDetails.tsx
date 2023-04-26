@@ -1,27 +1,14 @@
 import React, { MouseEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
-import {
-  Box,
-  Button,
-  Chip,
-  CircularProgress,
-  Divider,
-  IconButton,
-  LinearProgress,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Chip, Divider, IconButton, Stack, ToggleButton, ToggleButtonGroup, Typography, useTheme } from '@mui/material';
 import Icon from '../Icon/Icon';
 import { IconTypes } from '../../../constants';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import { taskHelpers } from '../../../helpers/taskHelpers';
-import { Add, AddCircle, AddComment, AddOutlined, Delete, Edit, MoreVert } from '@mui/icons-material';
+import { AddCircle, AddComment, Delete, Edit, MoreVert } from '@mui/icons-material';
 import TaskMenu from './parts/TaskMenu';
 import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import { toast } from 'react-toastify';
@@ -32,8 +19,8 @@ import { IProjectTaskComment } from '../../../models';
 import TaskProvider from '../../../services/TaskProvider';
 import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
 import { getComments } from '../../../store/reducers/comments/commentsThunk';
-import LinearProgressWithLabel from '../../controls/LinearProgressWithLabel/LinearProgressWithLabel';
 import TaskTimeModal from '../TaskTimeModal/TaskTimeModal';
+import TaskTimeTracking from './parts/TaskTimeTracking';
 
 const TaskDetails = () => {
   const { taskId, projectId } = useParams();
@@ -207,26 +194,7 @@ const TaskDetails = () => {
                   <AddCircle />
                 </IconButton>
               </Stack>
-              <Stack alignItems="center" gap={1}>
-                <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 200, width: '100%' }}>
-                  <Typography variant="body1" fontWeight={500} color="text.primary" width="100px">
-                    Estimated
-                  </Typography>
-                  <LinearProgressWithLabel color="info" value={task.time.estimated} />
-                </Stack>
-                <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 200, width: '100%' }}>
-                  <Typography variant="body1" fontWeight={500} color="text.primary" width="100px">
-                    Remaining
-                  </Typography>
-                  <LinearProgressWithLabel value={task.time.remaining} />
-                </Stack>
-                <Stack direction="row" alignItems="center" gap={1} sx={{ fontWeight: 200, width: '100%' }}>
-                  <Typography variant="body1" fontWeight={500} color="text.primary" width="100px">
-                    Logged
-                  </Typography>
-                  <LinearProgressWithLabel color="success" estimated={task.time.estimated} value={task.time.logged} />
-                </Stack>
-              </Stack>
+              <TaskTimeTracking data={task.time} />
             </Stack>
           </Stack>
         </Stack>
@@ -302,7 +270,7 @@ const TaskDetails = () => {
           {getCommentEditor()}
         </Stack>
       </Stack>
-      <TaskTimeModal open={isTimeModalOpen} handleClose={handleTimeModalClose} />
+      <TaskTimeModal open={isTimeModalOpen} handleClose={handleTimeModalClose} remaining={task.time.remaining} />
     </>
   );
 };

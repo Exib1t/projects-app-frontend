@@ -1,5 +1,5 @@
 import api from './api';
-import { IProjectTask, IProjectTaskCreate } from '../models';
+import { IProjectTask, IProjectTaskCreate, IProjectTaskEdit } from '../models';
 
 class TaskProvider {
   deleteOne = async (projectId: string | number, taskId: string | number) => {
@@ -10,7 +10,7 @@ class TaskProvider {
     return api.post(`projects/${projectId}/tasks`, task);
   };
 
-  updateOne = async (projectId: string | number, updatedTask: IProjectTask) => {
+  updateOne = async (projectId: string | number, updatedTask: IProjectTaskEdit) => {
     return api.put(`projects/${projectId}/tasks/${updatedTask.id}`, updatedTask);
   };
 
@@ -20,9 +20,10 @@ class TaskProvider {
     });
   };
 
-  logTime = async (projectId: string | number, taskId: string | number, timeLogged: string) => {
+  logTime = async (projectId: string | number, taskId: string | number, timeLogged: string, remaining: number) => {
     return api.post(`projects/${projectId}/tasks/${taskId}/log_time`, {
       logged: timeLogged,
+      remaining: remaining,
     });
   };
 }

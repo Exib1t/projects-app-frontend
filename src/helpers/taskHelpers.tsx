@@ -13,6 +13,13 @@ export const taskHelpers = {
             <Typography sx={{ fontWeight: 500 }}>Task</Typography>
           </>
         );
+      case '2':
+        return (
+          <>
+            <Icon type={IconTypes.task} fontSize={15} />
+            <Typography sx={{ fontWeight: 500 }}>Subtasks</Typography>
+          </>
+        );
       case '3':
         return (
           <>

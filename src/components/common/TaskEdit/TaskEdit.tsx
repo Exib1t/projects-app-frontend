@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/global';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
@@ -6,10 +6,9 @@ import Icon from '../Icon/Icon';
 import { IconTypes, quillModules } from '../../../constants';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { IProjectTask } from '../../../models';
+import { IProjectTaskEdit } from '../../../models';
 import { toast } from 'react-toastify';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
-import { getProjects } from '../../../store/reducers/projects/projectsThunk';
 import TaskProvider from '../../../services/TaskProvider';
 import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
 
@@ -20,22 +19,45 @@ const TaskEdit = () => {
   const { projectId, taskId } = useParams();
   const { tasks, sorting } = useAppSelector(state => state.tasks);
   const task = tasks.filter(task => String(task.id) === taskId)[0];
-  const [updatedTask, setUpdatedTask] = useState<IProjectTask>(task);
+  const [updatedTask, setUpdatedTask] = useState<IProjectTaskEdit>({
+    id: null,
+    title: 'New Task',
+    subtitle: '',
+    type: '',
+    priority: '',
+    description: '',
+    comments: [],
+    status: 1,
+    time: {
+      estimated: '',
+      logged: 0,
+      remaining: 0,
+    },
+    createdAt: '',
+    updatedAt: '',
+  });
 
   const handleInputChange = (e: any) => {
+    if (!updatedTask.id) return null;
     setUpdatedTask(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!projectId) return null;
+    if (!projectId || !updatedTask.id) return null;
     await TaskProvider.updateOne(projectId, updatedTask);
     toast.success('Task updated');
     dispatch(getTasks({ projectId, sorting }));
     navigate(`/projects/${projectId}/tasks/${taskId}`);
   };
 
-  if (!updatedTask) return null;
+  useEffect(() => {
+    if (task) {
+      setUpdatedTask({ ...task, time: { ...task.time, estimated: `${task.time.estimated}h` } });
+    }
+  }, [task]);
+
+  if (!updatedTask.id) return null;
   return (
     <Box
       component="form"
@@ -132,6 +154,20 @@ const TaskEdit = () => {
             </MenuItem>
           </Select>
         </FormControl>
+      </Stack>
+      <Stack direction="row" gap={1} alignItems="center">
+        <Typography variant="body1" fontWeight={400} width="100px" color="text.primary">
+          Estimate Remaining:
+        </Typography>
+        <TextField
+          size="small"
+          placeholder="12h"
+          value={updatedTask.time.estimated}
+          name="time.estimated"
+          onChange={e => setUpdatedTask(prevState => ({ ...prevState, time: { ...prevState.time, estimated: e.target.value } }))}
+          sx={{ width: '100px' }}
+          required
+        />
       </Stack>
       <Stack gap={1}>
         <Typography variant="body1" fontWeight={400} color="text.primary">
