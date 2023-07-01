@@ -6,7 +6,7 @@ import { setError } from '../store/reducers/globalSlicer';
 import { useState } from 'react';
 
 export const useAuth = () => {
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const dispatch = useAppDispatch();
   const createUser = async (user: IUserRegister) => {
     try {
