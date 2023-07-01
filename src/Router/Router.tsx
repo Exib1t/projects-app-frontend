@@ -22,6 +22,7 @@ import AppearancePage from '../components/pages/AppearancePage/AppearancePage';
 const Router = () => {
   const { authorized } = useAppSelector(state => state.user);
   const { refresh, isFetching } = useAuth();
+  console.log(isFetching);
 
   useEffect(() => {
     refresh();

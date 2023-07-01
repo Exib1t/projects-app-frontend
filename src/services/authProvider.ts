@@ -1,4 +1,4 @@
-import { IUserLogin, IUserRegister } from './../models/user/IUser';
+import { IUserLogin, IUserRegister } from '../models';
 import api from './api';
 import { useAppDispatch } from '../hooks/global';
 import { setAuthorized, setToken, setUserId } from '../store/reducers/user/userSlicer';
