@@ -28,7 +28,6 @@ const TaskDetails = () => {
   const { tasks, sorting } = useAppSelector(state => state.tasks);
   const { comments } = useAppSelector(state => state.comments);
   const { userId } = useAppSelector(state => state.user);
-  const project = projects.find(project => project.id === Number(projectId));
   const task = tasks.filter(task => String(task.id) === taskId)[0];
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [commentState, setCommentState] = useState<'create' | 'edit' | 'none'>('none');
@@ -37,6 +36,8 @@ const TaskDetails = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
+  console.log(projects);
+  const project = projects?.find(project => project.id === Number(projectId));
 
   if (!task || !projectId || !taskId || !project) return null;
 

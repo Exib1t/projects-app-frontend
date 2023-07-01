@@ -22,7 +22,6 @@ const TaskCreate = () => {
   const dispatch = useAppDispatch();
   const { projects, sorting } = useAppSelector(state => state.projects);
   const { sorting: taskSorting } = useAppSelector(state => state.tasks);
-  const project = projects.filter(project => String(project.id) === projectId)[0];
   const [task, setTask] = useState<IProjectTaskCreate>({
     id: null,
     title: 'New Task',
@@ -45,7 +44,7 @@ const TaskCreate = () => {
     toast.success('Task created');
     await dispatch(getProjects(sorting));
     await dispatch(getTasks({ projectId, sorting: taskSorting }));
-    navigate(`/projects/${project.id}/tasks/${data.id}`);
+    navigate(`/projects/${projectId}/tasks/${data.id}`);
   };
 
   return (

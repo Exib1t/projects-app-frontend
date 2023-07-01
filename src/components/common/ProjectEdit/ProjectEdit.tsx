@@ -19,7 +19,7 @@ import { ROUTES } from '../../../Router/routes';
 const ProjectEdit = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [availableUsers, setAvailableUsers] = useState<IUserSelect[]>([]);
-  const { sorting } = useAppSelector(state => state.projects);
+  const { sorting, projects } = useAppSelector(state => state.projects);
   const dispatch = useAppDispatch();
   const { projectId } = useParams();
   const theme = useTheme();
@@ -63,9 +63,12 @@ const ProjectEdit = () => {
   useEffect(() => {
     fetchAvailableUsers();
     fetchEditableProject();
-  }, []);
+  }, [projectId]);
 
   if (!project?.id) return <NotFound title="Project Not Found" btnLabel="Back to projects" link={ROUTES.PROJECTS} />;
+  if (!projects.some(p => p.id === project.id)) {
+    return <NotFound title="You don`t have access to this project" btnLabel="Back to projects" link={ROUTES.PROJECTS} />;
+  }
 
   return (
     <Box

@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
 import TaskProvider from '../../../services/TaskProvider';
 import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
+import NotFound from '../NotFound/NotFound';
+import { ROUTES } from '../../../Router/routes';
 
 const TaskEdit = () => {
   const theme = useTheme();
@@ -57,7 +59,12 @@ const TaskEdit = () => {
     }
   }, [task]);
 
-  if (!updatedTask.id) return null;
+  if (!projectId) return null;
+  if (!updatedTask?.id) return <NotFound title="Task Not Found" btnLabel="Back to tasks" link={ROUTES.PROJECT_TASKS.replace('projectId', projectId)} />;
+  if (!tasks.some(t => t.id === updatedTask.id)) {
+    return <NotFound title="You don`t have access to this task" btnLabel="Back to projects" link={ROUTES.PROJECT_TASKS.replace('projectId', projectId)} />;
+  }
+
   return (
     <Box
       component="form"

@@ -10,7 +10,7 @@ const ProjectsPage = () => {
   const location = useLocation();
 
   return (
-    <Stack bgcolor={theme.palette.secondary.main} direction="row" alignItems="flex-start">
+    <Stack bgcolor={theme.palette.secondary.main} direction="row" alignItems="stretch">
       <ProjectList />
       <Stack p={2} width="100%">
         {projectId || location.pathname.includes('projects/add') ? (
