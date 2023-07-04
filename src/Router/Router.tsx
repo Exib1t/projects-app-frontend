@@ -15,13 +15,14 @@ import TaskEdit from '../components/common/TaskEdit/TaskEdit';
 import ProjectCreate from '../components/common/ProjectCreate/ProjectCreate';
 import UsersPage from '../components/pages/UsersPage/UsersPage';
 import UsersList from '../components/common/UsersList/UsersList';
-import { Backdrop, CircularProgress } from '@mui/material';
+import { Backdrop, Box, CircularProgress, useTheme } from '@mui/material';
 import ProjectEdit from '../components/common/ProjectEdit/ProjectEdit';
 import AppearancePage from '../components/pages/AppearancePage/AppearancePage';
 
 const Router = () => {
   const { authorized } = useAppSelector(state => state.user);
   const { refresh, isFetching } = useAuth();
+  const theme = useTheme();
   console.log(isFetching);
 
   useEffect(() => {
@@ -30,9 +31,17 @@ const Router = () => {
 
   if (isFetching) {
     return (
-      <Backdrop open={true}>
-        <CircularProgress />
-      </Backdrop>
+      <Box
+        sx={{
+          background: theme.palette.secondary.main,
+          width: '100%',
+          height: '100vh',
+        }}
+      >
+        <Backdrop open={true}>
+          <CircularProgress />
+        </Backdrop>
+      </Box>
     );
   }
 
