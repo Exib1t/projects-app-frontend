@@ -18,6 +18,7 @@ import UsersList from '../components/common/UsersList/UsersList';
 import { Backdrop, Box, CircularProgress, useTheme } from '@mui/material';
 import ProjectEdit from '../components/common/ProjectEdit/ProjectEdit';
 import AppearancePage from '../components/pages/AppearancePage/AppearancePage';
+import video from '../assets/loading.mp4';
 
 const Router = () => {
   const { authorized } = useAppSelector(state => state.user);
@@ -33,14 +34,15 @@ const Router = () => {
     return (
       <Box
         sx={{
+          position: 'relative',
           background: theme.palette.secondary.main,
           width: '100%',
           height: '100vh',
         }}
       >
-        <Backdrop open={true}>
-          <CircularProgress />
-        </Backdrop>
+        <video width="320" height="340" autoPlay loop muted style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
+          <source src={video} type="video/mp4" />
+        </video>
       </Box>
     );
   }
