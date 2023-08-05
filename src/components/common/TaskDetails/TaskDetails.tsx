@@ -73,7 +73,7 @@ const TaskDetails = () => {
   ) => {
     if (!projectId || !taskId) return null;
     await CommentProvider.deleteOne(projectId, taskId, commentId);
-    // dispatch(getProjects(sorting));
+    dispatch(getProjects(sorting));
     dispatch(getTasks({ projectId, sorting }));
     dispatch(getComments({ projectId, taskId }));
     toast.error("Comment deleted");
