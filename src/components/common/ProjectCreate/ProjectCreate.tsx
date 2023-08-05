@@ -1,51 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useTheme } from '@mui/material';
-import GoBackBtn from '../../controls/GoBackBtn/GoBackBtn';
-import { IProject, IProjectCreate, IUserSelect } from '../../../models';
-import { CirclePicker } from 'react-color';
-import { IconTypes, projectColors } from '../../../constants';
-import api from '../../../services/api';
-import { toast } from 'react-toastify';
-import { getProjects } from '../../../store/reducers/projects/projectsThunk';
-import { useAppDispatch, useAppSelector } from '../../../hooks/global';
-import Icon from '../Icon/Icon';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../../Router/routes';
-import ProjectProvider from '../../../services/ProjectProvider';
+import React, { useEffect, useState } from "react";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import GoBackBtn from "../../controls/GoBackBtn/GoBackBtn";
+import { IProjectCreate } from "../../../models";
+import { CirclePicker } from "react-color";
+import { projectColors } from "../../../constants";
+import { toast } from "react-toastify";
+import {
+  createProject,
+  getProjectAvailableUsers,
+  getProjects,
+} from "../../../store/reducers/projects/projectsThunk";
+import { useAppDispatch, useAppSelector } from "../../../hooks/global";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../Router/routes";
 
 const ProjectCreate = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { sorting } = useAppSelector(state => state.projects);
-  const [availableUsers, setAvailableUsers] = useState<IUserSelect[]>([]);
+  const { sorting, availableUsers } = useAppSelector((state) => state.projects);
   const [project, setProject] = useState<IProjectCreate>({
     id: null,
-    title: '',
-    color: '',
+    title: "",
+    color: "",
     userIds: [],
     tasks: [],
   });
 
   const handleInputChange = (e: any) => {
-    setProject(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
-  };
-
-  const fetchAvailableUsers = async () => {
-    const { data } = await ProjectProvider.fetchAvailableUsers();
-    setAvailableUsers(data);
+    setProject((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const { data } = await ProjectProvider.createProject(project);
-    toast.success('Project created');
-    await dispatch(getProjects(sorting));
-    navigate(ROUTES.PROJECT_EDIT.replace(':projectId', String(data.id)));
+    dispatch(createProject(project))
+      .unwrap()
+      .then(async (project) => {
+        toast.success("Project created");
+        await dispatch(getProjects(sorting));
+        navigate(ROUTES.PROJECT_EDIT.replace(":projectId", String(project.id)));
+      });
   };
 
   useEffect(() => {
-    fetchAvailableUsers();
+    dispatch(getProjectAvailableUsers());
   }, []);
 
   return (
@@ -53,20 +62,25 @@ const ProjectCreate = () => {
       component="form"
       onSubmit={handleSubmit}
       sx={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        minHeight: 'calc(100vh - 100px)',
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        minHeight: "calc(100vh - 100px)",
         border: `2px solid ${theme.palette.secondary.dark}`,
-        borderRadius: '5px',
+        borderRadius: "5px",
         background: theme.palette.secondary.dark,
         p: 2,
         gap: 1,
       }}
     >
       <Stack direction="row" justifyContent="space-between" gap={1} mb={2}>
-        <Typography color="primary.main" variant="h6" fontWeight={700} textAlign="center">
+        <Typography
+          color="primary.main"
+          variant="h6"
+          fontWeight={700}
+          textAlign="center"
+        >
           Add Project
         </Typography>
         <GoBackBtn />
@@ -82,7 +96,7 @@ const ProjectCreate = () => {
           value={project.title}
           name="title"
           onChange={handleInputChange}
-          sx={{ width: '50%' }}
+          sx={{ width: "50%" }}
           required
         />
       </Stack>
@@ -94,7 +108,9 @@ const ProjectCreate = () => {
           color={project.color}
           colors={projectColors}
           width="100%"
-          onChangeComplete={color => setProject(prevState => ({ ...prevState, color: color.hex }))}
+          onChangeComplete={(color) =>
+            setProject((prevState) => ({ ...prevState, color: color.hex }))
+          }
         />
       </Stack>
       <Stack direction="row" gap={1} alignItems="center">
@@ -104,14 +120,14 @@ const ProjectCreate = () => {
         <Autocomplete
           size="small"
           options={availableUsers}
-          sx={{ width: '50%' }}
+          sx={{ width: "50%" }}
           multiple
           onChange={(event, values) => {
-            const userIds = values.map(value => value.id);
-            setProject(prevState => ({ ...prevState, userIds }));
+            const userIds = values.map((value) => value.id);
+            setProject((prevState) => ({ ...prevState, userIds }));
           }}
-          getOptionLabel={option => option.fullName}
-          renderInput={params => <TextField {...params} label="Users" />}
+          getOptionLabel={(option) => option.fullName}
+          renderInput={(params) => <TextField {...params} label="Users" />}
         />
       </Stack>
       <Stack
@@ -121,10 +137,10 @@ const ProjectCreate = () => {
         alignItems="center"
         p={2}
         sx={{
-          position: 'absolute',
+          position: "absolute",
           bottom: 0,
           left: 0,
-          width: '100%',
+          width: "100%",
         }}
       >
         <Button size="small" type="submit" sx={{ px: 4, fontWeight: 900 }}>

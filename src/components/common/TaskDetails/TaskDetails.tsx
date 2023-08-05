@@ -29,13 +29,17 @@ import {
 import TaskMenu from "./parts/TaskMenu";
 import { getProjects } from "../../../store/reducers/projects/projectsThunk";
 import { toast } from "react-toastify";
-import CommentProvider from "../../../services/CommentProvider";
 import CommentCreate from "../CommentCreate/CommentCreate";
 import CommentEdit from "../CommentEdit/CommentEdit";
 import { IProjectTaskComment } from "../../../models";
-import TaskProvider from "../../../services/TaskProvider";
-import { getTasks } from "../../../store/reducers/tasks/tasksThunk";
-import { getComments } from "../../../store/reducers/comments/commentsThunk";
+import {
+  getTasks,
+  updateTaskStatus,
+} from "../../../store/reducers/tasks/tasksThunk";
+import {
+  deleteComment,
+  getComments,
+} from "../../../store/reducers/comments/commentsThunk";
 import TaskTimeModal from "../TaskTimeModal/TaskTimeModal";
 import TaskTimeTracking from "./parts/TaskTimeTracking";
 
@@ -72,10 +76,10 @@ const TaskDetails = () => {
     commentId: number
   ) => {
     if (!projectId || !taskId) return null;
-    await CommentProvider.deleteOne(projectId, taskId, commentId);
-    dispatch(getProjects(sorting));
-    dispatch(getTasks({ projectId, sorting }));
-    dispatch(getComments({ projectId, taskId }));
+    await dispatch(deleteComment({ taskId, projectId, commentId }));
+    await dispatch(getProjects(sorting));
+    await dispatch(getTasks({ projectId, sorting }));
+    await dispatch(getComments({ projectId, taskId }));
     toast.error("Comment deleted");
   };
 
@@ -103,10 +107,10 @@ const TaskDetails = () => {
     e: MouseEvent<HTMLElement>,
     value: 1 | 2 | 3
   ) => {
-    await TaskProvider.updateStatus(projectId, taskId, value);
-    dispatch(getProjects(sorting));
-    dispatch(getTasks({ projectId, sorting }));
-    dispatch(getComments({ projectId, taskId }));
+    await dispatch(updateTaskStatus({ projectId, taskId, status: value }));
+    await dispatch(getProjects(sorting));
+    await dispatch(getTasks({ projectId, sorting }));
+    await dispatch(getComments({ projectId, taskId }));
     toast.success("Status updated");
   };
 

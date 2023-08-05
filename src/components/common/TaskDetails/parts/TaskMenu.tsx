@@ -1,14 +1,23 @@
-import React, { FC } from 'react';
-import { Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, useTheme } from '@mui/material';
-import { Delete, Edit, Logout, MoreTime, Person } from '@mui/icons-material';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ROUTES } from '../../../../Router/routes';
-import api from '../../../../services/api';
-import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/global';
-import { getProjects } from '../../../../store/reducers/projects/projectsThunk';
-import TaskProvider from '../../../../services/TaskProvider';
-import { getTasks } from '../../../../store/reducers/tasks/tasksThunk';
+import React, { FC } from "react";
+import {
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
+  useTheme,
+} from "@mui/material";
+import { Delete, Edit, MoreTime } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router-dom";
+import { ROUTES } from "../../../../Router/routes";
+import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/global";
+import { getProjects } from "../../../../store/reducers/projects/projectsThunk";
+import {
+  deleteTask,
+  getTasks,
+} from "../../../../store/reducers/tasks/tasksThunk";
 
 type Props = {
   menuAnchorEl: HTMLElement | null;
@@ -16,9 +25,13 @@ type Props = {
   handleTimeMenuOpen: () => void;
 };
 
-const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose, handleTimeMenuOpen }) => {
-  const { sorting } = useAppSelector(state => state.projects);
-  const { sorting: taskSorting } = useAppSelector(state => state.tasks);
+const TaskMenu: FC<Props> = ({
+  menuAnchorEl,
+  handleMenuClose,
+  handleTimeMenuOpen,
+}) => {
+  const { sorting } = useAppSelector((state) => state.projects);
+  const { sorting: taskSorting } = useAppSelector((state) => state.tasks);
   const { taskId, projectId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -26,16 +39,23 @@ const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose, handleTimeMenuOpen
 
   const handleDelete = async () => {
     if (!projectId || !taskId) return null;
-    const { data } = await TaskProvider.deleteOne(projectId, taskId);
-    dispatch(getProjects(sorting));
-    dispatch(getTasks({ projectId, sorting: taskSorting }));
-    toast.error(data.msg);
-    navigate(ROUTES.PROJECT_TASKS.replace(':projectId', String(projectId)));
+    dispatch(deleteTask({ taskId, projectId }))
+      .unwrap()
+      .then(async (res) => {
+        await dispatch(getProjects(sorting));
+        await dispatch(getTasks({ projectId, sorting: taskSorting }));
+        toast.error(res.msg);
+        navigate(ROUTES.PROJECT_TASKS.replace(":projectId", String(projectId)));
+      });
   };
 
   return (
-    <Menu anchorEl={menuAnchorEl} open={!!menuAnchorEl} onClose={handleMenuClose}>
-      <MenuList sx={{ width: '200px', maxWidth: '100%', p: '0', pt: 1 }}>
+    <Menu
+      anchorEl={menuAnchorEl}
+      open={!!menuAnchorEl}
+      onClose={handleMenuClose}
+    >
+      <MenuList sx={{ width: "200px", maxWidth: "100%", p: "0", pt: 1 }}>
         <MenuItem
           onClick={() => {
             handleMenuClose();
@@ -51,7 +71,12 @@ const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose, handleTimeMenuOpen
         <MenuItem
           onClick={() => {
             handleMenuClose();
-            navigate(ROUTES.PROJECT_TASK_EDIT.replace(':projectId', String(projectId)).replace(':taskId', String(taskId)));
+            navigate(
+              ROUTES.PROJECT_TASK_EDIT.replace(
+                ":projectId",
+                String(projectId)
+              ).replace(":taskId", String(taskId))
+            );
           }}
         >
           <ListItemIcon>
@@ -69,7 +94,9 @@ const TaskMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose, handleTimeMenuOpen
           <ListItemIcon>
             <Delete color="error" />
           </ListItemIcon>
-          <ListItemText sx={{ color: theme.palette.error.main }}>Delete</ListItemText>
+          <ListItemText sx={{ color: theme.palette.error.main }}>
+            Delete
+          </ListItemText>
         </MenuItem>
       </MenuList>
     </Menu>

@@ -1,13 +1,21 @@
-import React, { FC } from 'react';
-import { Divider, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, useTheme } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ROUTES } from '../../../../Router/routes';
-import api from '../../../../services/api';
-import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/global';
-import { getProjects } from '../../../../store/reducers/projects/projectsThunk';
-import ProjectProvider from '../../../../services/ProjectProvider';
+import React, { FC } from "react";
+import {
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuList,
+  useTheme,
+} from "@mui/material";
+import { Delete } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router-dom";
+import { ROUTES } from "../../../../Router/routes";
+import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/global";
+import {
+  deleteProject,
+  getProjects,
+} from "../../../../store/reducers/projects/projectsThunk";
 
 type Props = {
   menuAnchorEl: HTMLElement | null;
@@ -15,7 +23,7 @@ type Props = {
 };
 
 const ProjectMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose }) => {
-  const { sorting } = useAppSelector(state => state.projects);
+  const { sorting } = useAppSelector((state) => state.projects);
   const { projectId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -23,15 +31,22 @@ const ProjectMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose }) => {
 
   const handleDelete = async () => {
     if (!projectId) return null;
-    const { data } = await ProjectProvider.deleteProject(projectId);
-    dispatch(getProjects(sorting));
-    toast.error(data.msg);
-    navigate(ROUTES.PROJECTS);
+    dispatch(deleteProject(projectId))
+      .unwrap()
+      .then(async (res) => {
+        await dispatch(getProjects(sorting));
+        toast.error(res.msg);
+        navigate(ROUTES.PROJECTS);
+      });
   };
 
   return (
-    <Menu anchorEl={menuAnchorEl} open={!!menuAnchorEl} onClose={handleMenuClose}>
-      <MenuList sx={{ width: '200px', maxWidth: '100%', p: '0', pt: 1 }}>
+    <Menu
+      anchorEl={menuAnchorEl}
+      open={!!menuAnchorEl}
+      onClose={handleMenuClose}
+    >
+      <MenuList sx={{ width: "200px", maxWidth: "100%", p: "0", pt: 1 }}>
         <MenuItem
           onClick={() => {
             handleMenuClose();
@@ -41,7 +56,9 @@ const ProjectMenu: FC<Props> = ({ menuAnchorEl, handleMenuClose }) => {
           <ListItemIcon>
             <Delete color="error" />
           </ListItemIcon>
-          <ListItemText sx={{ color: theme.palette.error.main }}>Delete</ListItemText>
+          <ListItemText sx={{ color: theme.palette.error.main }}>
+            Delete
+          </ListItemText>
         </MenuItem>
       </MenuList>
     </Menu>

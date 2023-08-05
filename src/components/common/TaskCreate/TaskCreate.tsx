@@ -17,14 +17,11 @@ import Icon from "../Icon/Icon";
 import { IconTypes, quillModules } from "../../../constants";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { IProjectTask, IProjectTaskCreate } from "../../../models";
-import api from "../../../services/api";
+import { IProjectTaskCreate } from "../../../models";
 import { toast } from "react-toastify";
-import { setProjects } from "../../../store/reducers/projects/projectsSlicer";
 import GoBackBtn from "../../controls/GoBackBtn/GoBackBtn";
 import { getProjects } from "../../../store/reducers/projects/projectsThunk";
-import TaskProvider from "../../../services/TaskProvider";
-import { getTasks } from "../../../store/reducers/tasks/tasksThunk";
+import { createTask, getTasks } from "../../../store/reducers/tasks/tasksThunk";
 
 const TaskCreate = () => {
   const theme = useTheme();
@@ -51,13 +48,14 @@ const TaskCreate = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!projectId) return null;
-    const { data } = await TaskProvider.createOne(projectId, task);
-    dispatch(getProjects(sorting)).then(() => {
-      dispatch(getTasks({ projectId, sorting: taskSorting })).then(() => {
-        navigate(`/projects/${projectId}/tasks/${data.id}`);
+    dispatch(createTask({ task, projectId }))
+      .unwrap()
+      .then(async (task) => {
+        toast.success("Task created");
+        await dispatch(getProjects(sorting));
+        await dispatch(getTasks({ projectId, sorting: taskSorting }));
+        navigate(`/projects/${projectId}/tasks/${task.id}`);
       });
-    });
-    toast.success("Task created");
   };
 
   return (

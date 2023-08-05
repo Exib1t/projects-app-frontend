@@ -1,27 +1,35 @@
-import { useEffect, useState } from 'react';
-import { IUser } from '../../models';
-import UserProvider from '../../services/UserProvider';
+import { useEffect, useState } from "react";
+import { IUser } from "../../models";
+import { useAppDispatch } from "../global";
+import { getUser, updateUser } from "../../store/reducers/user/userThunk";
 
 export function useUser(id: number | string | null) {
   const [data, setData] = useState<IUser | null>(null);
+  const dispatch = useAppDispatch();
 
   const fetchUser = async () => {
     if (id) {
-      const { data } = await UserProvider.fetchUser(id);
-      setData(data);
-      return data;
+      dispatch(getUser(id))
+        .unwrap()
+        .then((user) => {
+          setData(user);
+          return data;
+        });
     } else {
-      return { msg: 'Id is missing' };
+      return { msg: "Id is missing" };
     }
   };
 
   const saveUser = async (updatedData: IUser) => {
     if (updatedData.id) {
-      const { data } = await UserProvider.updateUser(updatedData);
-      setData(data);
-      return data;
+      dispatch(updateUser(updatedData))
+        .unwrap()
+        .then((user) => {
+          setData(user);
+          return data;
+        });
     } else {
-      return { msg: 'Updated data is missing' };
+      return { msg: "Updated data is missing" };
     }
   };
 

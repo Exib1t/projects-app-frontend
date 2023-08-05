@@ -1,12 +1,21 @@
-import React, { FC } from 'react';
-import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../hooks/global';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import TaskProvider from '../../../services/TaskProvider';
-import { useParams } from 'react-router-dom';
-import { getTasks } from '../../../store/reducers/tasks/tasksThunk';
-import { setError } from '../../../store/reducers/globalSlicer';
-import { AxiosError } from 'axios';
+import React, { FC } from "react";
+import {
+  Box,
+  Button,
+  Modal,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../../hooks/global";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import {
+  getTasks,
+  updateTaskLogTime,
+} from "../../../store/reducers/tasks/tasksThunk";
+import { setError } from "../../../store/reducers/globalSlicer";
+import { AxiosError } from "axios";
 
 type Props = {
   open: boolean;
@@ -20,17 +29,24 @@ interface IFormState {
 
 const TaskTimeModal: FC<Props> = ({ open, handleClose, remaining }) => {
   const { projectId, taskId } = useParams();
-  const { sorting } = useAppSelector(state => state.tasks);
-  const { error } = useAppSelector(state => state.global);
+  const { sorting } = useAppSelector((state) => state.tasks);
+  const { error } = useAppSelector((state) => state.global);
   const dispatch = useAppDispatch();
   const { handleSubmit, register, reset } = useForm<IFormState>();
 
-  const onSubmit: SubmitHandler<IFormState> = async data => {
+  const onSubmit: SubmitHandler<IFormState> = async (data) => {
     if (projectId && taskId) {
       try {
         dispatch(setError(null));
-        await TaskProvider.logTime(projectId, taskId, data.timeLogged, remaining);
-        dispatch(getTasks({ projectId, sorting }));
+        await dispatch(
+          updateTaskLogTime({
+            taskId,
+            projectId,
+            timeLogged: data.timeLogged,
+            remaining,
+          })
+        );
+        await dispatch(getTasks({ projectId, sorting }));
         handleClose();
         reset();
       } catch (err: AxiosError | any) {
@@ -45,12 +61,12 @@ const TaskTimeModal: FC<Props> = ({ open, handleClose, remaining }) => {
         gap={4}
         bgcolor="secondary.main"
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           width: 500,
-          bgcolor: 'secondary.main',
+          bgcolor: "secondary.main",
           borderRadius: 1,
           p: 2,
           pb: 4,
@@ -71,7 +87,7 @@ const TaskTimeModal: FC<Props> = ({ open, handleClose, remaining }) => {
               onFocus={() => {
                 dispatch(setError(null));
               }}
-              {...register('timeLogged', { required: true })}
+              {...register("timeLogged", { required: true })}
             />
           </Stack>
           <Typography variant="body2" fontSize="14px" color="red" marginTop={2}>
