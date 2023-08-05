@@ -53,8 +53,8 @@ const TaskCreate = () => {
     if (!projectId) return null;
     const { data } = await TaskProvider.createOne(projectId, task);
     toast.success("Task created");
-    // await dispatch(getProjects(sorting));
-    await dispatch(getTasks({ projectId, sorting: taskSorting }));
+    dispatch(getProjects(sorting));
+    dispatch(getTasks({ projectId, sorting: taskSorting }));
     navigate(`/projects/${projectId}/tasks/${data.id}`);
   };
 
