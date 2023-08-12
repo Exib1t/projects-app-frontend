@@ -43,12 +43,15 @@ export const createComment = createAsyncThunk<
         ).replace(":taskId", String(taskId)),
         commentText
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: taskId,
           projectId: projectId,
@@ -84,12 +87,15 @@ export const updateComment = createAsyncThunk<
           .replace(":commentId", String(comment.id)),
         comment
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: taskId,
           projectId: projectId,
@@ -120,12 +126,15 @@ export const deleteComment = createAsyncThunk<
           .replace(":taskId", String(taskId))
           .replace(":commentId", String(commentId))
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: taskId,
           projectId: projectId,

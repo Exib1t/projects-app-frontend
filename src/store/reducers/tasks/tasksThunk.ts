@@ -32,12 +32,15 @@ export const createTask = createAsyncThunk<
   async ({ task, projectId }, { rejectWithValue, dispatch, getState }) => {
     try {
       const { data } = await api.post(`projects/${projectId}/tasks`, task);
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: data.id,
           projectId: projectId,
@@ -61,12 +64,15 @@ export const updateTask = createAsyncThunk<
         `projects/${projectId}/tasks/${task.id}`,
         task
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: data.id,
           projectId: projectId,
@@ -89,12 +95,15 @@ export const deleteTask = createAsyncThunk<
       const { data } = await api.delete(
         `projects/${projectId}/tasks/${taskId}`
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: taskId,
           projectId: projectId,
@@ -121,12 +130,15 @@ export const updateTaskStatus = createAsyncThunk<
         `projects/${projectId}/tasks/${taskId}/set_status`,
         { status }
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: taskId,
           projectId: projectId,
@@ -161,12 +173,15 @@ export const updateTaskLogTime = createAsyncThunk<
           remaining: remaining,
         }
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: projectId })
       );
       await dispatch(
         getComments({
+          // @ts-ignore
           sorting: getState().comments.sorting,
           taskId: taskId,
           projectId: projectId,

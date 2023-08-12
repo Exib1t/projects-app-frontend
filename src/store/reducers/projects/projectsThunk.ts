@@ -46,8 +46,10 @@ export const updateProject = createAsyncThunk<IProject, IProjectCreate>(
     try {
       const { data } = await api.put(`projects/${project.id}`, project);
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: data.id })
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       return data;
     } catch (err) {
@@ -62,8 +64,10 @@ export const createProject = createAsyncThunk<IProject, IProjectCreate>(
     try {
       const { data } = await api.post("projects", project);
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: data.id })
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       return data;
     } catch (err) {
@@ -78,8 +82,10 @@ export const deleteProject = createAsyncThunk<{ msg: string }, number | string>(
     try {
       const { data } = await api.delete(`projects/${projectId}`);
       await dispatch(
+        // @ts-ignore
         getTasks({ sorting: getState().tasks.sorting, projectId: data.id })
       );
+      // @ts-ignore
       await dispatch(getProjects(getState().projects.sorting));
       return data;
     } catch (err) {
