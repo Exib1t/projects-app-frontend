@@ -16,7 +16,6 @@ import { toast } from "react-toastify";
 import {
   createProject,
   getProjectAvailableUsers,
-  getProjects,
 } from "../../../store/reducers/projects/projectsThunk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/global";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +47,6 @@ const ProjectCreate = () => {
       .unwrap()
       .then(async (project) => {
         toast.success("Project created");
-        await dispatch(getProjects(sorting));
         navigate(ROUTES.PROJECT_EDIT.replace(":projectId", String(project.id)));
       });
   };

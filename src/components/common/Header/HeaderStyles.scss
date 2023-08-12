@@ -1,0 +1,17 @@
+.dark__header,
+.light__header {
+  justify-content: space-between;
+  width: 100%;
+  height: 64px;
+  padding: 10px 20px;
+}
+
+.dark__header {
+  background-color: var(--dark-header-bg);
+  border-bottom: 1px solid var(--dark-header-divider);
+}
+
+.dark__profileBtn,
+.light__profileBtn {
+  border: 1px solid var(--dark-header-profileBtn) !important;
+}

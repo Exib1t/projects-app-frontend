@@ -1,0 +1,27 @@
+.dark__menu,
+.light__menu {
+  & .MuiList-root {
+    padding: 0;
+    margin-top: 5px !important;
+  }
+
+  & .MuiPaper-root {
+    overflow: visible;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+.dark__menuList,
+.light__menuList {
+  width: 250px;
+  max-width: 100%;
+  padding: 0;
+}
+
+.dark__menuList {
+  background: var(--dark-menuList);
+  border: 1px solid var(--dark-menuList-border);
+  border-radius: 5px;
+  box-shadow: 1px 4px 4px 0 var(--dark-menuList-shadow);
+}

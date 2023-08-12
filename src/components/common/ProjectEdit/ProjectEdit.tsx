@@ -16,7 +16,6 @@ import { toast } from "react-toastify";
 import {
   getProject,
   getProjectAvailableUsers,
-  getProjects,
   updateProject,
 } from "../../../store/reducers/projects/projectsThunk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/global";
@@ -69,7 +68,6 @@ const ProjectEdit = () => {
     e.preventDefault();
     await dispatch(updateProject(project));
     toast.success("Project updated");
-    await dispatch(getProjects(sorting));
   };
 
   useEffect(() => {

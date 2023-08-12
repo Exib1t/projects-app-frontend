@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProject, IUserSelect } from "../../../models";
 import { getProjectAvailableUsers, getProjects } from "./projectsThunk";
+import { ISorting } from "../../../models/global";
 
 interface InitialStateType {
   projects: IProject[];
   availableUsers: IUserSelect[];
   isLoading: boolean;
-  sorting: "ASC" | "DESC";
+  sorting: ISorting;
 }
 
 const initialState: InitialStateType = {

@@ -1,32 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IProjectTask } from '../../../models';
-import { getTasks } from './tasksThunk';
+import { createSlice } from "@reduxjs/toolkit";
+import { getTasks } from "./tasksThunk";
+import { ITask } from "../../../models/task/ITask";
+import { ISorting } from "../../../models/global";
 
 interface InitialStateType {
-  tasks: IProjectTask[];
+  tasks: ITask[];
   isLoading: boolean;
-  sorting: 'ASC' | 'DESC';
+  sorting: ISorting;
 }
 
 const initialState: InitialStateType = {
   tasks: [],
-  sorting: 'ASC',
+  sorting: "ASC",
   isLoading: false,
 };
 
 const tasksSlicer = createSlice({
-  name: 'tasks',
+  name: "tasks",
   initialState,
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(getTasks.pending, state => {
+  extraReducers: (builder) => {
+    builder.addCase(getTasks.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(getTasks.fulfilled, (state, action) => {
       state.tasks = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(getTasks.rejected, state => {
+    builder.addCase(getTasks.rejected, (state) => {
       state.isLoading = false;
     });
   },

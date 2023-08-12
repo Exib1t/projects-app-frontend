@@ -10,10 +10,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks/global";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import {
-  getTasks,
-  updateTaskLogTime,
-} from "../../../store/reducers/tasks/tasksThunk";
+import { updateTaskLogTime } from "../../../store/reducers/tasks/tasksThunk";
 import { setError } from "../../../store/reducers/globalSlicer";
 import { AxiosError } from "axios";
 
@@ -46,7 +43,6 @@ const TaskTimeModal: FC<Props> = ({ open, handleClose, remaining }) => {
             remaining,
           })
         );
-        await dispatch(getTasks({ projectId, sorting }));
         handleClose();
         reset();
       } catch (err: AxiosError | any) {

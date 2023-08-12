@@ -1,0 +1,19 @@
+.dark__navLink, .light__navLink {
+  margin: 0;
+  padding: 0 0 5px;
+  font: 500 20px/1 Ubuntu;
+  color: var(--text-primary);
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  transition: .3s;
+
+  &:hover {
+    border-bottom: 2px solid var(--text-primary);
+  }
+
+  &.active {
+    pointer-events: none;
+    color: var(--main) !important;
+    border-bottom: 2px solid var(--main);
+  }
+}

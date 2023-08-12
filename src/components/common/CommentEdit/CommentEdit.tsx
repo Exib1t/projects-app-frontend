@@ -4,31 +4,23 @@ import { Button, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks/global";
-import { getProjects } from "../../../store/reducers/projects/projectsThunk";
 import { quillModules } from "../../../constants";
-import { IProjectTaskComment } from "../../../models";
-import { getTasks } from "../../../store/reducers/tasks/tasksThunk";
-import {
-  getComments,
-  updateComment,
-} from "../../../store/reducers/comments/commentsThunk";
+import { updateComment } from "../../../store/reducers/comments/commentsThunk";
+import { IComment } from "../../../models/comment/IComment";
 
 type Props = {
   handleCommentCancel: () => void;
-  data: IProjectTaskComment;
+  data: IComment;
 };
 
 const CommentEdit: FC<Props> = ({ handleCommentCancel, data }) => {
-  const [comment, setComment] = useState<IProjectTaskComment>(data);
+  const [comment, setComment] = useState<IComment>(data);
   const { sorting } = useAppSelector((state) => state.projects);
   const { taskId, projectId } = useParams();
   const dispatch = useAppDispatch();
   const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     if (!projectId || !taskId) return null;
     await dispatch(updateComment({ comment, taskId, projectId }));
-    await dispatch(getProjects(sorting));
-    await dispatch(getTasks({ projectId }));
-    await dispatch(getComments({ projectId, taskId }));
     toast.success("Comment added");
     handleCommentCancel();
   };

@@ -17,12 +17,12 @@ import Icon from "../Icon/Icon";
 import { IconTypes, quillModules } from "../../../constants";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { IProjectTaskEdit } from "../../../models";
 import { toast } from "react-toastify";
 import GoBackBtn from "../../controls/GoBackBtn/GoBackBtn";
-import { getTasks, updateTask } from "../../../store/reducers/tasks/tasksThunk";
+import { updateTask } from "../../../store/reducers/tasks/tasksThunk";
 import NotFound from "../NotFound/NotFound";
 import { ROUTES } from "../../../Router/routes";
+import { ITaskEdit } from "../../../models/task/ITask";
 
 const TaskEdit = () => {
   const theme = useTheme();
@@ -31,7 +31,7 @@ const TaskEdit = () => {
   const { projectId, taskId } = useParams();
   const { tasks, sorting } = useAppSelector((state) => state.tasks);
   const task = tasks.filter((task) => String(task.id) === taskId)[0];
-  const [updatedTask, setUpdatedTask] = useState<IProjectTaskEdit>({
+  const [updatedTask, setUpdatedTask] = useState<ITaskEdit>({
     id: null,
     title: "New Task",
     subtitle: "",
@@ -62,7 +62,6 @@ const TaskEdit = () => {
     if (!projectId || !updatedTask.id) return null;
     await dispatch(updateTask({ task: updatedTask, projectId }));
     toast.success("Task updated");
-    await dispatch(getTasks({ projectId, sorting }));
     navigate(`/projects/${projectId}/tasks/${taskId}`);
   };
 

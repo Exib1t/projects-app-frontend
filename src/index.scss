@@ -2,26 +2,35 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: Ubuntu !important;
-  transition: .3s background-color;
+  font-family: "Ubuntu", sans-serif;
+  transition: 0.3s background-color;
+}
+
+:root {
+  --divider: rgba(255, 255, 255, 0.23);
+  --main: #dba34e;
+  --secondary: #1a1b22;
+  --secondary-dark: #16161e;
+  --text-primary: #d6d6d6;
+  --text-light: #ffffff;
+  //New Styles
+  --dark-menuList: #1a1b22;
+  --dark-menuList-border: #1a1b22;
+  --dark-menuList-shadow: #1a1b22;
+  --dark-menuItem-text: #d6d6d6;
+  --dark-menuItem-divider: rgba(255, 255, 255, 0.23);
+  --dark-header-bg: #16161e;
+  --dark-header-divider: rgba(255, 255, 255, 0.23);
+  --dark-header-profileBtn: #d6d6d6;
 }
 
 .light {
-  --divider: rgba(0, 0, 0, .23);
-  --main: #DBA34E;
-  --secondary: #D6D6D6;
-  --secondary-dark: #FFFFFF;
-  --text-primary: #1A1B22;
+  --divider: rgba(0, 0, 0, 0.23);
+  --main: #dba34e;
+  --secondary: #d6d6d6;
+  --secondary-dark: #ffffff;
+  --text-primary: #1a1b22;
   --text-light: #16161e;
-}
-
-.dark {
-  --divider: rgba(255, 255, 255, .23);
-  --main: #DBA34E;
-  --secondary: #1A1B22;
-  --secondary-dark: #16161e;
-  --text-primary: #D6D6D6;
-  --text-light: #FFFFFF;
 }
 
 body {
@@ -33,27 +42,7 @@ body {
 }
 
 .-color_primary {
-  color: var(--main) !important
-}
-
-.b-navLink {
-  margin: 0;
-  padding: 0 0 5px;
-  font: 500 20px/1 Ubuntu;
-  color: var(--text-primary);
-  border-bottom: 2px solid transparent;
-  text-decoration: none;
-  transition: .3s;
-
-  &:hover {
-    border-bottom: 2px solid var(--text-primary);
-  }
-
-  &.active {
-    pointer-events: none;
-    color: var(--main) !important;
-    border-bottom: 2px solid var(--main);
-  }
+  color: var(--main) !important;
 }
 
 .quill {
@@ -64,7 +53,8 @@ body {
   &.comments-show {
     min-height: auto;
 
-    .ql-container, .ql-toolbar {
+    .ql-container,
+    .ql-toolbar {
       border: none;
     }
   }
@@ -85,11 +75,13 @@ body {
   border-bottom-right-radius: 5px;
 }
 
-.ql-container, .quill {
+.ql-container,
+.quill {
   background: var(--secondary);
 }
 
-.ql-container, .ql-toolbar {
+.ql-container,
+.ql-toolbar {
   border-color: var(--divider) !important;
 }
 
@@ -99,7 +91,8 @@ body {
   gap: 5px;
 }
 
-.ql-formats button, .ql-formats .ql-picker {
+.ql-formats button,
+.ql-formats .ql-picker {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
@@ -118,20 +111,35 @@ body {
   width: 108px !important;
 }
 
-.ql-formats button path, .ql-formats button line, .ql-formats button rect, .ql-formats .ql-picker path, .ql-formats .ql-picker line, .ql-formats .ql-picker rect, .ql-formats .ql-picker polyline {
+.ql-formats button path,
+.ql-formats button line,
+.ql-formats button rect,
+.ql-formats .ql-picker path,
+.ql-formats .ql-picker line,
+.ql-formats .ql-picker rect,
+.ql-formats .ql-picker polyline {
   stroke: var(--text-primary) !important;
   opacity: 1 !important;
 }
 
-.ql-formats button.ql-active path, .ql-formats button.ql-active line, .ql-formats button.ql-active rect, .ql-formats .ql-picker.ql-active path, .ql-formats .ql-picker.ql-active line, .ql-formats .ql-picker.ql-active rect, .ql-formats .ql-picker.ql-active polyline  {
+.ql-formats button.ql-active path,
+.ql-formats button.ql-active line,
+.ql-formats button.ql-active rect,
+.ql-formats .ql-picker.ql-active path,
+.ql-formats .ql-picker.ql-active line,
+.ql-formats .ql-picker.ql-active rect,
+.ql-formats .ql-picker.ql-active polyline {
   stroke: var(--secondary-dark) !important;
 }
 
-.ql-formats button:hover, .ql-formats .ql-picker:hover  {
+.ql-formats button:hover,
+.ql-formats .ql-picker:hover {
   background: #a97e23 !important;
 
   &:not(.ql-align) {
-    & path, & line, & rect {
+    & path,
+    & line,
+    & rect {
       stroke: var(--secondary-dark) !important;
     }
   }
@@ -154,7 +162,7 @@ body {
   }
 }
 
-.ql-picker-item{
+.ql-picker-item {
   color: var(--text-primary) !important;
 
   &:hover {
@@ -168,6 +176,7 @@ body {
   border-color: var(--divider) !important;
 }
 
-.MuiDataGrid-cellContent, .MuiDataGrid-columnHeaderTitle {
+.MuiDataGrid-cellContent,
+.MuiDataGrid-columnHeaderTitle {
   font-size: 16px;
 }

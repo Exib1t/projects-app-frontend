@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { IUser } from "../../models";
-import { useAppDispatch } from "../global";
-import { getUser, updateUser } from "../../store/reducers/user/userThunk";
+import { IUser } from "../models";
+import { useAppDispatch } from "./global";
+import { getUser, updateUser } from "../store/reducers/user/userThunk";
 
 export function useUser(id: number | string | null) {
   const [data, setData] = useState<IUser | null>(null);

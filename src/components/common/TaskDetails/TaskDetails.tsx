@@ -27,21 +27,14 @@ import {
   MoreVert,
 } from "@mui/icons-material";
 import TaskMenu from "./parts/TaskMenu";
-import { getProjects } from "../../../store/reducers/projects/projectsThunk";
 import { toast } from "react-toastify";
 import CommentCreate from "../CommentCreate/CommentCreate";
 import CommentEdit from "../CommentEdit/CommentEdit";
-import { IProjectTaskComment } from "../../../models";
-import {
-  getTasks,
-  updateTaskStatus,
-} from "../../../store/reducers/tasks/tasksThunk";
-import {
-  deleteComment,
-  getComments,
-} from "../../../store/reducers/comments/commentsThunk";
+import { updateTaskStatus } from "../../../store/reducers/tasks/tasksThunk";
+import { deleteComment } from "../../../store/reducers/comments/commentsThunk";
 import TaskTimeModal from "../TaskTimeModal/TaskTimeModal";
 import TaskTimeTracking from "./parts/TaskTimeTracking";
+import { IComment } from "../../../models/comment/IComment";
 
 const TaskDetails = () => {
   const { taskId, projectId } = useParams();
@@ -54,8 +47,7 @@ const TaskDetails = () => {
   const [commentState, setCommentState] = useState<"create" | "edit" | "none">(
     "none"
   );
-  const [editableComment, setEditableComment] =
-    useState<IProjectTaskComment | null>(null);
+  const [editableComment, setEditableComment] = useState<IComment | null>(null);
   const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -77,9 +69,6 @@ const TaskDetails = () => {
   ) => {
     if (!projectId || !taskId) return null;
     await dispatch(deleteComment({ taskId, projectId, commentId }));
-    await dispatch(getProjects(sorting));
-    await dispatch(getTasks({ projectId, sorting }));
-    await dispatch(getComments({ projectId, taskId }));
     toast.error("Comment deleted");
   };
 
@@ -97,7 +86,7 @@ const TaskDetails = () => {
 
   const handleCommentEdit = (
     e: MouseEvent<HTMLButtonElement>,
-    comment: IProjectTaskComment
+    comment: IComment
   ) => {
     setCommentState("edit");
     setEditableComment(comment);
@@ -108,9 +97,6 @@ const TaskDetails = () => {
     value: 1 | 2 | 3
   ) => {
     await dispatch(updateTaskStatus({ projectId, taskId, status: value }));
-    await dispatch(getProjects(sorting));
-    await dispatch(getTasks({ projectId, sorting }));
-    await dispatch(getComments({ projectId, taskId }));
     toast.success("Status updated");
   };
 

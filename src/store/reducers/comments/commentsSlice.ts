@@ -1,32 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IProjectTaskComment } from '../../../models';
-import { getComments } from './commentsThunk';
+import { createSlice } from "@reduxjs/toolkit";
+import { getComments } from "./commentsThunk";
+import { IComment } from "../../../models/comment/IComment";
+import { ISorting } from "../../../models/global";
 
 interface InitialStateType {
-  comments: IProjectTaskComment[];
+  comments: IComment[];
   isLoading: boolean;
-  sorting: 'ASC' | 'DESC';
+  sorting: ISorting;
 }
 
 const initialState: InitialStateType = {
   comments: [],
-  sorting: 'ASC',
+  sorting: "ASC",
   isLoading: false,
 };
 
 const commentsSlice = createSlice({
-  name: 'comments',
+  name: "comments",
   initialState,
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(getComments.pending, state => {
+  extraReducers: (builder) => {
+    builder.addCase(getComments.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(getComments.fulfilled, (state, action) => {
       state.comments = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(getComments.rejected, state => {
+    builder.addCase(getComments.rejected, (state) => {
       state.isLoading = false;
     });
   },
